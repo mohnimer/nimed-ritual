@@ -885,3 +885,28 @@ footer button { color: var(--paper); border-color: var(--paper); background: tra
     transition: none !important;
   }
 }
+/* FIX: keep Series overview bracelet centered */
+.series-stage.is-presented .series-art img {
+  animation: none !important;
+}
+
+.series-art img {
+  top: 50% !important;
+  left: 50% !important;
+  width: min(58%, 470px) !important;
+  height: auto !important;
+  max-height: 76% !important;
+  object-fit: contain !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.series-art img.is-changing {
+  transform: translate(-50%, -50%) scale(.92) !important;
+}
+
+@media (max-width: 760px) {
+  .series-art img {
+    width: 72% !important;
+    max-height: 72% !important;
+  }
+}
