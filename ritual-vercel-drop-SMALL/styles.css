@@ -233,8 +233,7 @@ button { color: inherit; }
 .series-stage { min-height: 520px; display: grid; grid-template-columns: 1.15fr .85fr; align-items: stretch; margin-top: 55px; border: 1px solid var(--line); background: var(--white); }
 .series-art { position: relative; min-height: 520px; overflow: hidden; border-right: 1px solid rgba(30,30,30,.16); }
 .series-art::before { position: absolute; content: ""; width: 58%; aspect-ratio: 1; top: 50%; left: 50%; border: 1px solid var(--series-accent); border-radius: 50%; opacity: .4; transform: translate(-50%,-50%); transition: border-color .45s; }
-.series-art img { position: absolute; z-index: 2; top: 50%; left: 50%; width: 72%; height: 72%; object-fit: contain; transform: translate(-50%,-50%); transition: opacity .25s, transform .6s var(--ease); }
-.series-art img.is-changing { opacity: 0; transform: translate(-50%,-45%) scale(.92); }
+.series-art img { position: absolute; z-index: 2; top: 45%; left: 50%; width: min(62%, 500px); height: auto; max-height: 76%; object-fit: contain; transform: translate(-50%,-50%); transition: opacity .25s, transform .6s var(--ease); }.series-art img.is-changing { opacity: 0; transform: translate(-50%,-45%) scale(.92); }
 .series-number { position: absolute; z-index: 1; top: 24px; left: 30px; color: var(--series-accent); font: 400 clamp(72px, 9vw, 124px)/1 var(--heading); opacity: .13; transition: color .45s; }
 .series-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(38px, 5vw, 70px); }
 .series-copy > p:first-child { margin: 0 0 28px; color: var(--series-accent); font-size: 9px; letter-spacing: .17em; text-transform: uppercase; }
@@ -402,7 +401,7 @@ footer button { align-self: center; }
   .section-intro { margin-top: 20px; }
   .series-stage { display: block; min-height: 0; margin-top: 38px; }
   .series-art { min-height: 360px; border-right: 0; border-bottom: 1px solid rgba(30,30,30,.16); }
-  .series-art img { width: 88%; height: 78%; }
+.series-art img { top: 46%; width: 74%; height: auto; max-height: 74%; }
   .series-art::before { width: 78%; }
   .series-copy { padding: 38px 25px 48px; }
   .series-tabs { grid-template-columns: 1fr 1fr; margin-inline: -18px; }
