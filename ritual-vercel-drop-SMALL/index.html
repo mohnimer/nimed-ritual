@@ -23,7 +23,7 @@
       <a href="#collection">Catalogue</a>
     </nav>
 
-    <button class="header-quote" type="button" data-quote-open>Quotation <span data-quote-count>0</span></button>
+    <button class="header-quote" type="button" data-quote-open>Wholesale Cart <span data-quote-count>0</span></button>
     <button class="menu-toggle" type="button" data-menu-toggle aria-controls="mobile-menu" aria-expanded="false">
       <span></span><span></span><span class="sr-only">Open menu</span>
     </button>
@@ -33,7 +33,7 @@
     <nav aria-label="Mobile navigation">
       <a href="#series"><span>01</span> Series guide</a>
       <a href="#collection"><span>02</span> Catalogue</a>
-      <button type="button" data-quote-open><span>03</span> Quotation <strong data-quote-count>0</strong></button>
+      <button type="button" data-quote-open><span>03</span> Wholesale Cart <strong data-quote-count>0</strong></button>
     </nav>
     <p>Ritual bracelet line<br>Designed for connection</p>
   </div>
@@ -154,6 +154,10 @@
         <span data-dialog-series></span>
         <span class="product-unisex-label" data-dialog-unisex hidden>UNISEX</span>
       </div>
+      <div class="dialog-pricing">
+        <p><span>Retail / RRP</span><strong data-dialog-retail></strong></p>
+        <p><span>Wholesale tiers</span><span data-dialog-wholesale></span></p>
+      </div>
       <fieldset class="personalisation-panel">
         <legend>Personalisation</legend>
         <label class="option-check">
@@ -178,8 +182,8 @@
       </fieldset>
       <div class="dialog-quote-controls">
         <label for="dialog-quantity">Quantity</label>
-        <input id="dialog-quantity" data-dialog-quantity type="number" min="1" max="9999" step="1" value="1" inputmode="numeric">
-        <button type="button" data-dialog-add>Add to quotation request</button>
+        <input id="dialog-quantity" data-dialog-quantity type="number" min="25" max="9999" step="1" value="25" inputmode="numeric">
+        <button type="button" data-dialog-add>Add to wholesale cart</button>
         <p data-dialog-add-status aria-live="polite"></p>
       </div>
     </div>
@@ -189,14 +193,14 @@
     <div class="quote-dialog-header">
       <div>
         <p class="section-index">Wholesale request</p>
-        <h2 id="quote-title">Your quotation</h2>
-        <p>Review the models and quantities, then prepare an email request to Pharma Service Co. LLC.</p>
+        <h2 id="quote-title">Wholesale Cart</h2>
+        <p>Review quantities and tier pricing, then request a final quotation from Pharma Service Co. LLC.</p>
       </div>
       <button class="dialog-close" type="button" data-quote-close aria-label="Close quotation">Close</button>
     </div>
 
     <address class="quote-recipient-card">
-      <span>Quotation recipient</span>
+      <span>Final quotation recipient</span>
       <strong>Pharma Service Co. LLC</strong>
       <a href="mailto:info@pharmaservice.ae">info@pharmaservice.ae</a>
       <a href="tel:+971553511335">+971 55 351 1335</a>
@@ -228,8 +232,8 @@
 
       <p class="quote-status" data-quote-status aria-live="polite"></p>
       <div class="quote-actions">
-        <button type="button" data-quote-print>Print quotation request</button>
-        <button type="button" class="primary-action" data-quote-send>Email Pharma Service</button>
+        <button type="button" data-quote-print>Print wholesale cart</button>
+        <button type="button" class="primary-action" data-quote-send>Request final quote</button>
       </div>
     </div>
   </dialog>

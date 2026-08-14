@@ -233,7 +233,8 @@ button { color: inherit; }
 .series-stage { min-height: 520px; display: grid; grid-template-columns: 1.15fr .85fr; align-items: stretch; margin-top: 55px; border: 1px solid var(--line); background: var(--white); }
 .series-art { position: relative; min-height: 520px; overflow: hidden; border-right: 1px solid rgba(30,30,30,.16); }
 .series-art::before { position: absolute; content: ""; width: 58%; aspect-ratio: 1; top: 50%; left: 50%; border: 1px solid var(--series-accent); border-radius: 50%; opacity: .4; transform: translate(-50%,-50%); transition: border-color .45s; }
-.series-art img { position: absolute; z-index: 2; top: 45%; left: 50%; width: min(62%, 500px); height: auto; max-height: 76%; object-fit: contain; transform: translate(-50%,-50%); transition: opacity .25s, transform .6s var(--ease); }.series-art img.is-changing { opacity: 0; transform: translate(-50%,-45%) scale(.92); }
+.series-art img { position: absolute; z-index: 2; top: 50%; left: 50%; width: 72%; height: 72%; object-fit: contain; transform: translate(-50%,-50%); transition: opacity .25s, transform .6s var(--ease); }
+.series-art img.is-changing { opacity: 0; transform: translate(-50%,-45%) scale(.92); }
 .series-number { position: absolute; z-index: 1; top: 24px; left: 30px; color: var(--series-accent); font: 400 clamp(72px, 9vw, 124px)/1 var(--heading); opacity: .13; transition: color .45s; }
 .series-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(38px, 5vw, 70px); }
 .series-copy > p:first-child { margin: 0 0 28px; color: var(--series-accent); font-size: 9px; letter-spacing: .17em; text-transform: uppercase; }
@@ -401,7 +402,7 @@ footer button { align-self: center; }
   .section-intro { margin-top: 20px; }
   .series-stage { display: block; min-height: 0; margin-top: 38px; }
   .series-art { min-height: 360px; border-right: 0; border-bottom: 1px solid rgba(30,30,30,.16); }
-.series-art img { top: 46%; width: 74%; height: auto; max-height: 74%; }
+  .series-art img { width: 88%; height: 78%; }
   .series-art::before { width: 78%; }
   .series-copy { padding: 38px 25px 48px; }
   .series-tabs { grid-template-columns: 1fr 1fr; margin-inline: -18px; }
@@ -885,11 +886,63 @@ footer button { color: var(--paper); border-color: var(--paper); background: tra
     transition: none !important;
   }
 }
-/* FIX: keep Series overview bracelet centered */
-.series-stage.is-presented .series-art img {
-  animation: none !important;
-}
 
+
+/* WHOLESALE PRICING / CART */
+.product-price-block {
+  display: grid;
+  gap: 5px;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+}
+.product-price-block strong {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.product-price-block span {
+  color: var(--copper);
+  font-size: 10px;
+  line-height: 1.45;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.dialog-pricing {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0 24px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.dialog-pricing p {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 20px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.dialog-pricing p > span:first-child {
+  color: var(--sand);
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.dialog-pricing strong { font-weight: 600; }
+.quote-item-price {
+  display: grid;
+  gap: 3px;
+  margin-top: 10px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.quote-item-price strong { color: var(--copper); font-size: 13px; }
+.quote-item-price span:last-child { color: var(--sand); }
+
+/* SERIES OVERVIEW IMAGE POSITIONING FIX */
+.series-stage.is-presented .series-art img { animation: none !important; }
 .series-art img {
   top: 50% !important;
   left: 50% !important;
@@ -899,14 +952,9 @@ footer button { color: var(--paper); border-color: var(--paper); background: tra
   object-fit: contain !important;
   transform: translate(-50%, -50%) !important;
 }
-
-.series-art img.is-changing {
-  transform: translate(-50%, -50%) scale(.92) !important;
-}
+.series-art img.is-changing { transform: translate(-50%, -50%) scale(.92) !important; }
 
 @media (max-width: 760px) {
-  .series-art img {
-    width: 72% !important;
-    max-height: 72% !important;
-  }
+  .series-art img { width: 72% !important; max-height: 72% !important; }
+  .dialog-pricing p { grid-template-columns: 1fr; gap: 5px; }
 }

@@ -221,6 +221,42 @@ const products = [
   }
 ];
 
+
+const pricing = {
+  "double-halo-black": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "double-halo-white": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "meridian-link": { retail: 69, p25: 25.00, p50: 23.00, p100: 21.25, p500: 18.75 },
+  "obsidian-link": { retail: 75, p25: 27.00, p50: 25.00, p100: 23.00, p500: 20.25 },
+  "axis": { retail: 55, p25: 19.00, p50: 17.50, p100: 16.25, p500: 14.25 },
+  "bold-ss": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "halo-line": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "quiet-balance": { retail: 55, p25: 19.00, p50: 17.50, p100: 16.25, p500: 14.25 },
+  "noir-curve": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "national": { retail: 45, p25: 16.50, p50: 15.25, p100: 14.00, p500: 12.50 },
+  "union-71": { retail: 45, p25: 16.50, p50: 15.25, p100: 14.00, p500: 12.50 },
+  "tide": { retail: 39, p25: 13.50, p50: 12.50, p100: 11.50, p500: 10.00 },
+  "manchester-city": { retail: 29, p25: 11.25, p50: 10.25, p100: 9.50, p500: 8.50 },
+  "barcelona": { retail: 29, p25: 11.25, p50: 10.25, p100: 9.50, p500: 8.50 },
+  "real-madrid": { retail: 29, p25: 11.25, p50: 10.25, p100: 9.50, p500: 8.50 },
+  "red-medallion": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
+  "slim-link": { retail: 85, p25: 29.25, p50: 27.00, p100: 25.00, p500: 22.00 },
+  "braided-id": { retail: 55, p25: 19.00, p50: 17.50, p100: 16.25, p500: 14.25 }
+};
+
+function formatAED(value) {
+  return `AED ${Number(value).toFixed(Number(value) % 1 ? 2 : 0)}`;
+}
+
+function tierForQuantity(productId, quantity) {
+  const p = pricing[productId];
+  const qty = Math.max(25, Number(quantity) || 25);
+  if (qty >= 1000) return { unit: null, label: "Request volume pricing", volume: true };
+  if (qty >= 500) return { unit: p.p500, label: "500+ pcs", volume: false };
+  if (qty >= 100) return { unit: p.p100, label: "100+ pcs", volume: false };
+  if (qty >= 50) return { unit: p.p50, label: "50+ pcs", volume: false };
+  return { unit: p.p25, label: "25+ pcs", volume: false };
+}
+
 // Archive Edition lifestyle art: consistent 1970s editorial scenes while the
 // clean product and construction views remain untouched.
 products.forEach(product => {
@@ -406,6 +442,10 @@ function renderProducts(filter = "all") {
             <h3>${product.name}</h3>
             <p>${product.series}</p>
             ${product.unisex ? '<span class="product-unisex-label">UNISEX</span>' : ''}
+            <div class="product-price-block">
+              <strong>RRP ${formatAED(pricing[product.id].retail)}</strong>
+              <span>Wholesale from ${formatAED(pricing[product.id].p25)} / pc · MOQ 25</span>
+            </div>
             <p class="product-personalisation">Engraving / Medical ID / QR*</p>
           </div>
           <span>${product.code}</span>
@@ -413,9 +453,9 @@ function renderProducts(filter = "all") {
       </button>
       <div class="product-card-actions">
         <label class="quantity-field">Qty
-          <input type="number" min="1" max="9999" step="1" value="${quote.get(product.id)?.quantity || 1}" inputmode="numeric" data-card-quantity="${product.id}" aria-label="Quantity for ${product.name}">
+          <input type="number" min="25" max="9999" step="1" value="${quote.get(product.id)?.quantity || 25}" inputmode="numeric" data-card-quantity="${product.id}" aria-label="Quantity for ${product.name}">
         </label>
-        <button class="add-quote-button" type="button" data-add-product="${product.id}">Add to quotation</button>
+        <button class="add-quote-button" type="button" data-add-product="${product.id}">Add to wholesale cart</button>
       </div>
     </article>
   `).join("");
@@ -430,7 +470,7 @@ function renderProducts(filter = "all") {
       addToQuote(button.dataset.addProduct, quantityInput.value);
       animateQuoteConfirmation(button);
       const originalLabel = button.textContent;
-      button.textContent = "Added to quotation";
+      button.textContent = "Added to wholesale cart";
       window.setTimeout(() => { button.textContent = originalLabel; }, 1400);
     });
   });
@@ -451,11 +491,13 @@ $$('[data-filter]').forEach(button => {
 function openProduct(productId) {
   const product = products.find(item => item.id === productId);
   if (!product) return;
-  const quoteItem = quote.get(product.id) || normaliseQuoteItem(1);
+  const quoteItem = quote.get(product.id) || normaliseQuoteItem(25);
   $("[data-dialog-code]").textContent = `${product.code} / ${product.category === "silicon" ? "Silicon series" : product.category}`;
   $("[data-dialog-name]").textContent = product.name;
   $("[data-dialog-description]").textContent = product.description;
   $("[data-dialog-series]").textContent = product.series;
+  $("[data-dialog-retail]").textContent = formatAED(pricing[product.id].retail);
+  $("[data-dialog-wholesale]").innerHTML = `25 pcs <strong>${formatAED(pricing[product.id].p25)}</strong> · 50 pcs <strong>${formatAED(pricing[product.id].p50)}</strong> · 100 pcs <strong>${formatAED(pricing[product.id].p100)}</strong> · 500 pcs <strong>${formatAED(pricing[product.id].p500)}</strong> · 1,000+ <strong>Request volume pricing</strong>`;
   const unisexLabel = $("[data-dialog-unisex]");
   unisexLabel.hidden = !product.unisex;
   $("[data-dialog-quantity]").value = quoteItem.quantity;
@@ -544,7 +586,7 @@ $("[data-dialog-add]").addEventListener("click", () => {
     medicalQr: $("[data-dialog-medical-qr]").checked
   });
   animateQuoteConfirmation($("[data-dialog-add]"));
-  $("[data-dialog-add-status]").textContent = "Added to your quotation request.";
+  $("[data-dialog-add-status]").textContent = "Added to your wholesale cart.";
 });
 
 function updateSeries(seriesId) {
@@ -578,7 +620,7 @@ $("[data-series-product]").dataset.productId = "obsidian-link";
 $("[data-series-product]").addEventListener("click", event => openProduct(event.currentTarget.dataset.productId));
 
 function normaliseQuantity(value) {
-  return Math.max(1, Math.min(9999, Math.round(Number(value) || 1)));
+  return Math.max(25, Math.min(9999, Math.round(Number(value) || 25)));
 }
 
 function normaliseQuoteItem(value) {
@@ -620,7 +662,7 @@ function updateQuoteSummary() {
 
 function addToQuote(productId, value, personalisation) {
   if (!products.some(product => product.id === productId)) return;
-  const current = quote.get(productId) || normaliseQuoteItem(1);
+  const current = quote.get(productId) || normaliseQuoteItem(25);
   quote.set(productId, normaliseQuoteItem({
     ...current,
     ...(personalisation || {}),
@@ -651,9 +693,10 @@ function renderQuote() {
         <div class="quote-item-copy">
           <h3>${product.name}</h3>
           <p>${product.code} / ${product.series}</p>
+          ${(() => { const tier = tierForQuantity(product.id, item.quantity); const total = tier.unit ? tier.unit * item.quantity : null; return `<div class="quote-item-price"><span>RRP ${formatAED(pricing[product.id].retail)}</span><strong>${tier.volume ? "Request volume pricing" : `${formatAED(tier.unit)} / pc`}</strong><span>${total ? `Line total ${formatAED(total)}` : "1,000+ pcs · final project price on request"}</span></div>`; })()}
           ${options.length ? `<p class="quote-item-options">${options.join("<br>")}</p>` : ""}
         </div>
-        <input type="number" min="1" max="9999" step="1" value="${item.quantity}" inputmode="numeric" data-quote-quantity="${product.id}" aria-label="Quantity for ${product.name}">
+        <input type="number" min="25" max="9999" step="1" value="${item.quantity}" inputmode="numeric" data-quote-quantity="${product.id}" aria-label="Quantity for ${product.name}">
         <div class="quote-item-actions">
           <button type="button" data-quote-edit="${product.id}">Edit options</button>
           <button type="button" data-quote-remove="${product.id}">Remove</button>
@@ -669,7 +712,7 @@ function renderQuote() {
       const item = quote.get(input.dataset.quoteQuantity);
       quote.set(input.dataset.quoteQuantity, { ...item, quantity });
       saveQuote();
-      updateQuoteSummary();
+      renderQuote();
     });
   });
 
@@ -732,7 +775,9 @@ function buildQuoteRequest() {
       item.medicalId ? "Direct Medical ID engraving: requested" : "",
       item.medicalQr ? "Medical QR*: requested" : ""
     ].filter(Boolean);
-    return `${product.code} | ${product.name} | Qty ${item.quantity}${options.length ? ` | ${options.join(" | ")}` : ""}`;
+    const tier = tierForQuantity(product.id, item.quantity);
+    const priceText = tier.volume ? "Volume price requested" : `${formatAED(tier.unit)} / pc | Line ${formatAED(tier.unit * item.quantity)}`;
+    return `${product.code} | ${product.name} | Qty ${item.quantity} | RRP ${formatAED(pricing[product.id].retail)} | ${priceText}${options.length ? ` | ${options.join(" | ")}` : ""}`;
   });
   const includesMedicalQr = [...quote.values()].some(item => item.medicalQr);
   const includesPersonalisation = [...quote.values()].some(item => item.engraving || item.medicalId || item.medicalQr);
@@ -759,7 +804,7 @@ function buildQuoteRequest() {
     ...(includesPersonalisation ? ["", "Personalisation artwork and placement require buyer approval before production."] : []),
     ...(includesMedicalQr ? ["*Medical QR includes a medical asterisk marker and scannable code. The customer-managed profile URL and scan proof are confirmed separately; no medical data is collected in this catalogue."] : []),
     "",
-    "Please confirm availability, wholesale pricing, lead time and delivery terms."
+    "Please confirm availability, final wholesale pricing, lead time, delivery terms and any applicable personalisation charges."
   ].join("\n");
 }
 
@@ -781,7 +826,7 @@ $("[data-quote-send]").addEventListener("click", async () => {
   }
 
   const buyer = getBuyerDetails();
-  const subject = `Nimed wholesale quotation request - ${buyer.company}`;
+  const subject = `Nimed wholesale cart - request final quote - ${buyer.company}`;
   window.location.href = `mailto:${quoteRecipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(request)}`;
   status.textContent = `Opening your email app with the request addressed to Pharma Service at ${quoteRecipient}.`;
 });
