@@ -958,3 +958,89 @@ footer button { color: var(--paper); border-color: var(--paper); background: tra
   .series-art img { width: 72% !important; max-height: 72% !important; }
   .dialog-pricing p { grid-template-columns: 1fr; gap: 5px; }
 }
+
+
+/* Custom engraving editorial banner */
+.engraving-banner {
+  display: grid;
+  grid-template-columns: minmax(330px, .78fr) minmax(0, 1.42fr);
+  min-height: 560px;
+  margin: 0;
+  background: #f4eee3;
+  border-top: 1px solid rgba(30,30,30,.14);
+  border-bottom: 1px solid rgba(30,30,30,.14);
+  overflow: hidden;
+}
+.engraving-banner-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 72px clamp(36px, 5vw, 82px) 70px 7vw;
+  background: linear-gradient(90deg, #f5efe5 0%, #f5efe5 86%, rgba(245,239,229,.92) 100%);
+}
+.engraving-banner-copy .section-index { margin: 0 0 25px; }
+.engraving-banner h2 {
+  margin: 0;
+  color: var(--ink);
+  font: 400 clamp(54px, 5.7vw, 88px)/.92 var(--heading);
+  letter-spacing: -.025em;
+}
+.engraving-kicker {
+  margin: 38px 0 0;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+}
+.engraving-rule {
+  width: 135px;
+  height: 1px;
+  margin: 24px 0 22px;
+  background: rgba(30,30,30,.62);
+}
+.engraving-body {
+  max-width: 390px;
+  margin: 0;
+  color: #25251f;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.engraving-note {
+  max-width: 390px;
+  margin: 14px 0 28px;
+  color: #716b61;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.engraving-banner .arrow-link { align-self: flex-start; }
+.engraving-banner-visual {
+  min-height: 560px;
+  background-image: url("assets/banner/custom-engraving.png");
+  background-size: cover;
+  background-position: 100% 50%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 900px) {
+  .engraving-banner { grid-template-columns: 44% 56%; min-height: 500px; }
+  .engraving-banner-copy { padding: 58px 34px 58px 5vw; }
+  .engraving-banner h2 { font-size: clamp(46px, 6.4vw, 66px); }
+  .engraving-banner-visual { min-height: 500px; background-position: 82% 50%; }
+}
+
+@media (max-width: 760px) {
+  .engraving-banner { display: flex; flex-direction: column-reverse; min-height: 0; }
+  .engraving-banner-visual {
+    min-height: 365px;
+    background-size: auto 100%;
+    background-position: 78% 50%;
+    background-color: #f3ede2;
+  }
+  .engraving-banner-copy { padding: 48px 22px 56px; }
+  .engraving-banner h2 { font-size: clamp(50px, 15vw, 70px); }
+  .engraving-kicker { margin-top: 30px; }
+  .engraving-body, .engraving-note { max-width: 520px; }
+}
