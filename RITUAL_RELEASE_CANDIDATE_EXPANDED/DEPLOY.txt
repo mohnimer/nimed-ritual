@@ -1,0 +1,17 @@
+CORRECTED VERCEL PACKAGE
+
+IMPORTANT: this ZIP has NO nested project folder.
+After extracting it, you should immediately see:
+index.html
+styles.css
+script.js
+assets/
+vercel.json
+
+Vercel settings:
+- Framework Preset: Other
+- Build Command: leave blank
+- Output Directory: leave blank
+- Install Command: leave blank
+
+Deploy the extracted folder itself.
