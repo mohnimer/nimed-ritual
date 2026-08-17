@@ -419,3 +419,59 @@
   .magnetic-bracelet-card strong { font-size: 18px; }
   .magnetic-bracelet-card span { font-size: 7px; }
 }
+
+
+/* ===== 17 AUG RELEASE CLEANUP =====
+   Homepage title + simplified intro
+   Mobile checked: 375 / 390 / 430px
+*/
+.ritual-home-intro {
+  display: block;
+  max-width: 1480px;
+  margin: 0 auto 42px;
+}
+.ritual-home-intro > div {
+  width: 100%;
+}
+.ritual-home h1 {
+  max-width: none;
+  margin: 24px 0 0;
+  white-space: nowrap;
+  font-size: clamp(54px, 7vw, 104px);
+  line-height: .88;
+}
+.ritual-home h1 .ritual-choice-prefix {
+  display: inline-block;
+  margin-right: .16em;
+  font-size: .52em;
+  line-height: 1;
+  letter-spacing: -.02em;
+  vertical-align: .08em;
+}
+.ritual-home h1 em {
+  display: inline;
+  color: var(--rust);
+}
+
+@media (max-width: 760px) {
+  .ritual-home-intro {
+    margin-bottom: 28px;
+  }
+  .ritual-home h1 {
+    margin-top: 16px;
+    font-size: clamp(39px, 11.7vw, 56px);
+    white-space: nowrap;
+    letter-spacing: -.035em;
+  }
+  .ritual-home h1 .ritual-choice-prefix {
+    margin-right: .11em;
+    font-size: .47em;
+    vertical-align: .12em;
+  }
+}
+
+@media (max-width: 390px) {
+  .ritual-home h1 {
+    font-size: clamp(36px, 11.5vw, 47px);
+  }
+}

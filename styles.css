@@ -1082,3 +1082,27 @@ footer button { color: var(--paper); border-color: var(--paper); background: tra
   .engraving-banner-copy { padding-inline: 20px; }
   .engraving-banner h2 { font-size: clamp(46px, 14vw, 58px); }
 }
+
+
+/* ===== 17 AUG CATALOGUE CARD CLEANUP =====
+   Product photography floats cleanly; information remains boxed.
+*/
+.product-grid {
+  border-top: 0;
+  border-left: 0;
+}
+.product-card {
+  border-right: 0;
+  border-bottom: 0;
+}
+.product-card-visual {
+  border: 0;
+}
+.product-card-info {
+  border: 1px solid var(--line);
+  border-bottom: 0;
+}
+.product-card-actions {
+  border: 1px solid var(--line);
+  border-top: 0;
+}
