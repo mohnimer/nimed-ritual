@@ -1,0 +1,40 @@
+RITUAL — BRACELETS-FIRST RELEASE
+
+Homepage
+- Restored light/cream catalogue visual language.
+- Product-line choices are simple outlined links with no preview imagery.
+- Bracelets is the primary line and links directly into the 21-model catalogue.
+- Ritual Links is Coming Soon only; no link and no product image.
+
+Bracelets
+- Renamed Ritual Wear to Bracelets.
+- Bracelet catalogue moved ahead of the engraving and secondary product lines.
+- Header and mobile navigation prioritize Bracelets and Catalogue.
+
+Magnetic Rituals
+- Only verified magnetic bracelet models are shown:
+  Polar Link, Cobalt Ion, Ion Arc.
+- Club silicone bracelets are excluded.
+- Face Ritual Tool and 100 Magnetic Spheres are purchasable through the same Wholesale Cart.
+
+Pricing
+Face Ritual Tool:
+RRP AED 200
+10 pcs: AED 150 / pc
+20 pcs: AED 138 / pc
+30 pcs: AED 127.50 / pc
+Maximum quantity: 30 pcs
+
+100 Magnetic Spheres:
+RRP AED 150 / 100-piece set
+10 sets: AED 112.50 / set
+20 sets: AED 103.50 / set
+30 sets: AED 95.50 / set
+50+ sets: Request volume pricing
+
+Breathing Rituals
+- Light layout.
+- Uses supplied Breathe Easy packaging image.
+
+Mobile
+- Dedicated layout rules included for 760, 430 and 375 px widths.

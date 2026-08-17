@@ -1,35 +1,24 @@
-
-/* ==========================================================
-   RITUAL EXPANSION / RELEASE CANDIDATE
-   Wear · Magnetic · Breathing · Links
-   Mobile-first acceptance tested at 375 / 390 / 430 px.
-   ========================================================== */
-
+/* RITUAL EXPANSION / LIGHT RELEASE — mobile checked at 375 / 390 / 430 px */
 .ritual-home {
-  padding: 138px 5vw 74px;
-  background:
-    radial-gradient(circle at 82% 12%, rgba(84,191,219,.10), transparent 28%),
-    linear-gradient(180deg, #fbfaf6 0%, #f5f0e6 100%);
+  padding: 132px 5vw 58px;
+  background: #fbfaf6;
   border-bottom: 1px solid var(--line);
 }
 .ritual-home-intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  grid-template-columns: minmax(0,1.15fr) minmax(300px,.85fr);
   gap: 8vw;
   align-items: end;
   max-width: 1480px;
-  margin: 0 auto 58px;
+  margin: 0 auto 42px;
 }
 .ritual-home h1 {
   max-width: 850px;
   margin: 24px 0 0;
-  font: 400 clamp(58px, 7vw, 106px)/.88 var(--heading);
+  font: 400 clamp(58px,7vw,104px)/.88 var(--heading);
   letter-spacing: -.035em;
 }
-.ritual-home h1 em {
-  color: var(--rust);
-  font-style: normal;
-}
+.ritual-home h1 em { color: var(--rust); font-style: normal; }
 .ritual-home-intro-copy {
   max-width: 560px;
   margin: 0;
@@ -42,133 +31,71 @@
 
 .ritual-lines {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
+  grid-template-columns: repeat(4,1fr);
   max-width: 1480px;
   margin: 0 auto;
-  border: 1px solid rgba(30,30,30,.17);
-  background: rgba(30,30,30,.16);
+  border: 1px solid var(--line);
 }
 .ritual-line-card {
-  position: relative;
-  min-height: 440px;
-  display: flex;
-  flex-direction: column;
-  padding: 28px;
-  overflow: hidden;
-  background: #fff;
+  min-height: 108px;
+  display: grid;
+  align-content: space-between;
+  gap: 10px;
+  padding: 20px 22px;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  background: #fbfaf6;
+  text-decoration: none;
+  transition: background .2s ease;
 }
-.ritual-line-card::after {
-  position: absolute;
-  z-index: 3;
-  right: 24px;
-  bottom: 22px;
-  content: "↘";
-  font-size: 22px;
-  transition: transform .35s var(--ease);
-}
-.ritual-line-card:hover::after { transform: translate(5px, 5px); }
-.ritual-line-card .line-index {
-  position: relative;
-  z-index: 4;
-  color: var(--sand);
-  font-size: 9px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.ritual-line-card h2 {
-  position: relative;
-  z-index: 4;
-  max-width: 280px;
-  margin: 10px 0 0;
-  font: 400 38px/.95 var(--heading);
-}
-.ritual-line-card p {
-  position: relative;
-  z-index: 4;
-  max-width: 270px;
-  margin: 12px 0 0;
-  color: #5f5a51;
-  font-size: 12px;
-  line-height: 1.55;
-}
-.ritual-line-card .line-tag {
-  position: relative;
-  z-index: 4;
-  width: max-content;
-  margin-top: auto;
-  padding: 7px 9px;
-  border: 1px solid rgba(30,30,30,.20);
-  background: rgba(255,255,255,.78);
+.ritual-line-card:last-child { border-right: 0; }
+.ritual-line-card:hover { background: #f3efe6; }
+.ritual-line-card.primary { background: #f5efe3; }
+.ritual-line-card span {
   font-size: 8px;
+  letter-spacing: .16em;
+  color: #8b795e;
+}
+.ritual-line-card strong { font: 400 26px/1 var(--heading); }
+.ritual-line-card b {
+  font-size: 8px;
+  font-weight: 500;
   letter-spacing: .13em;
   text-transform: uppercase;
 }
-.ritual-line-media {
-  position: absolute;
-  z-index: 1;
-  inset: 135px 0 0;
+.ritual-line-card.coming-soon { color: #8d887e; cursor: default; }
+.ritual-line-card.coming-soon:hover { background: #fbfaf6; }
+.mobile-coming-soon {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  color: #8d887e;
+  font-size: 31px;
+  line-height: 1.05;
+  padding: .3em 0;
 }
-.ritual-line-media::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.03) 42%);
-}
-.ritual-line-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.ritual-line-card.magnetic { background: #f2f2ef; }
-.ritual-line-card.magnetic .ritual-line-media img { object-fit: contain; padding: 20px 38px 16px; }
-.ritual-line-card.links .ritual-line-media img { object-fit: contain; padding: 20px; }
+.mobile-coming-soon span { font-size: 10px; letter-spacing: .15em; }
 
-.breathe-visual {
-  position: absolute;
-  z-index: 1;
-  inset: 132px 0 0;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: linear-gradient(145deg, #d9f2f8, #8fd3e4 55%, #2e6e8d);
-}
-.breathe-visual::before,
-.breathe-visual::after {
-  position: absolute;
-  width: 72px;
-  height: 190px;
-  content: "";
-  border: 18px solid rgba(255,255,255,.92);
-  border-radius: 52px;
-  transform: rotate(18deg) translateX(-30px);
-}
-.breathe-visual::after { transform: rotate(-18deg) translateX(30px); }
-.breathe-visual span {
-  position: relative;
-  z-index: 3;
-  color: #073b56;
-  font: 700 11px/1 var(--body);
-  letter-spacing: .20em;
-  text-transform: uppercase;
-}
+#bracelets { border-top: 0; }
+#collection { scroll-margin-top: 90px; }
 
-/* Section shells */
 .ritual-division {
-  padding: 110px 6vw;
+  padding: 100px 6vw;
   border-bottom: 1px solid var(--line);
+  background: #fbfaf6;
+  color: var(--ink);
 }
 .ritual-section-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, .75fr);
+  grid-template-columns: minmax(0,1fr) minmax(320px,.75fr);
   gap: 6vw;
   align-items: end;
   max-width: 1480px;
-  margin: 0 auto 52px;
+  margin: 0 auto 46px;
 }
 .ritual-section-heading h2 {
   margin: 16px 0 0;
-  font: 400 clamp(48px, 5vw, 78px)/.92 var(--heading);
+  font: 400 clamp(48px,5vw,78px)/.92 var(--heading);
   letter-spacing: -.025em;
 }
 .ritual-section-heading > p {
@@ -179,48 +106,28 @@
   line-height: 1.65;
 }
 
-/* Magnetic Rituals */
-.magnetic-rituals {
-  color: #eeeae1;
-  background: #191b1a;
-}
-.magnetic-rituals .section-index { color: #d3a956; }
-.magnetic-rituals .ritual-section-heading > p { color: #bcb7ad; }
+/* Magnetic Rituals: original cream/white catalogue language. */
+.magnetic-rituals { background: #f6f2ea; color: var(--ink); }
+.magnetic-rituals .section-index { color: var(--rust); }
 .magnetic-note {
   max-width: 1480px;
   display: grid;
   grid-template-columns: 1fr 1.35fr;
-  gap: 1px;
-  margin: 0 auto 38px;
-  background: rgba(255,255,255,.16);
-  border: 1px solid rgba(255,255,255,.16);
+  margin: 0 auto 30px;
+  border: 1px solid var(--line);
+  background: #fbfaf6;
 }
-.magnetic-note > div {
-  padding: 26px 30px;
-  background: #222522;
-}
-.magnetic-note h3 {
-  margin: 7px 0 10px;
-  font: 400 31px/1 var(--heading);
-}
-.magnetic-note p {
-  margin: 0;
-  color: #c5c0b6;
-  font-size: 12px;
-  line-height: 1.65;
-}
-.magnetic-note .research-areas {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  align-items: stretch;
-}
+.magnetic-note > div { padding: 24px 28px; }
+.magnetic-note h3 { margin: 7px 0 10px; font: 400 31px/1 var(--heading); }
+.magnetic-note p { margin: 0; color: #5d584f; font-size: 12px; line-height: 1.65; }
+.magnetic-note .research-areas { display: grid; grid-template-columns: repeat(3,1fr); }
 .research-areas span {
   display: grid;
   align-content: center;
   padding: 18px;
-  border-left: 1px solid rgba(255,255,255,.12);
-  color: #e4dfd4;
-  font-size: 10px;
+  border-left: 1px solid var(--line);
+  color: #4f4b44;
+  font-size: 9px;
   line-height: 1.4;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -228,7 +135,7 @@
 .research-areas strong {
   display: block;
   margin-bottom: 6px;
-  color: #d3a956;
+  color: var(--rust);
   font-size: 8px;
   letter-spacing: .15em;
 }
@@ -237,52 +144,35 @@
   max-width: 1480px;
   display: grid;
   grid-template-columns: 1.2fr .8fr;
-  gap: 18px;
-  margin: 0 auto 70px;
+  gap: 16px;
+  margin: 0 auto 64px;
 }
 .magnetic-feature {
-  min-width: 0;
   overflow: hidden;
+  border: 1px solid var(--line);
   color: var(--ink);
-  background: #f4f1ea;
+  background: #fff;
 }
 .magnetic-feature-media {
-  min-height: 520px;
+  min-height: 470px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   background: #fff;
+  border-bottom: 1px solid var(--line);
 }
 .magnetic-feature-media.single { grid-template-columns: 1fr; }
-.magnetic-feature-media img {
-  width: 100%;
-  height: 520px;
-  object-fit: cover;
-}
+.magnetic-feature-media img { width: 100%; height: 470px; object-fit: cover; }
 .magnetic-feature-media .product-isolated { object-fit: contain; padding: 24px; }
-.magnetic-feature-copy { padding: 28px 30px 32px; }
+.magnetic-feature-copy { padding: 26px 28px 30px; }
 .magnetic-feature-copy .micro-label {
   color: var(--rust);
   font-size: 9px;
   letter-spacing: .15em;
   text-transform: uppercase;
 }
-.magnetic-feature-copy h3 {
-  margin: 9px 0 11px;
-  font: 400 36px/1 var(--heading);
-}
-.magnetic-feature-copy p {
-  max-width: 680px;
-  margin: 0;
-  color: #57534c;
-  font-size: 13px;
-  line-height: 1.6;
-}
-.magnetic-feature-copy .feature-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: 18px;
-}
+.magnetic-feature-copy h3 { margin: 9px 0 11px; font: 400 36px/1 var(--heading); }
+.magnetic-feature-copy p { margin: 0; color: #57534c; font-size: 13px; line-height: 1.6; }
+.feature-facts { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
 .feature-facts span {
   padding: 7px 9px;
   border: 1px solid #cfc8bb;
@@ -290,331 +180,242 @@
   letter-spacing: .10em;
   text-transform: uppercase;
 }
-
+.magnetic-price {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 14px;
+  align-items: baseline;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.magnetic-price span { font-size: 8px; letter-spacing: .14em; text-transform: uppercase; }
+.magnetic-price strong { font: 400 27px/1 var(--heading); }
+.magnetic-price small { grid-column: 1/-1; color: #6f6a61; font-size: 10px; }
+.magnetic-buy { display: flex; gap: 8px; margin-top: 15px; }
+.magnetic-buy label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  font-size: 8px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.magnetic-buy input {
+  width: 58px;
+  padding: 9px 4px;
+  border: 0;
+  background: transparent;
+  font: inherit;
+}
+.magnetic-buy button {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: #fff;
+  font-size: 8px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.magnetic-tier-note {
+  margin-top: 10px !important;
+  color: #817a6e !important;
+  font-size: 9px !important;
+}
 .magnetic-bracelet-heading {
   max-width: 1480px;
   display: flex;
   justify-content: space-between;
   gap: 30px;
   align-items: end;
-  margin: 0 auto 22px;
+  margin: 0 auto 20px;
   padding-top: 18px;
-  border-top: 1px solid rgba(255,255,255,.22);
+  border-top: 1px solid var(--line);
 }
 .magnetic-bracelet-heading h3 { margin: 0; font: 400 38px/1 var(--heading); }
-.magnetic-bracelet-heading p { max-width: 560px; margin: 0; color: #aaa59b; font-size: 11px; line-height: 1.5; }
+.magnetic-bracelet-heading p {
+  max-width: 560px;
+  margin: 0;
+  color: #6c675e;
+  font-size: 11px;
+  line-height: 1.5;
+}
 .magnetic-bracelet-grid {
   max-width: 1480px;
   display: grid;
-  grid-template-columns: repeat(6, minmax(0,1fr));
-  gap: 1px;
-  margin: 0 auto;
-  background: rgba(255,255,255,.16);
-  border: 1px solid rgba(255,255,255,.16);
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  border: 1px solid var(--line);
+  background: #fff;
 }
 .magnetic-bracelet-card {
-  min-width: 0;
-  padding: 18px;
+  padding: 20px;
   border: 0;
-  color: #f0ece3;
-  background: #1f211f;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  background: #fff;
   text-align: left;
   cursor: pointer;
 }
+.magnetic-bracelet-card:last-child { border-right: 0; }
 .magnetic-bracelet-card img {
   width: 100%;
-  aspect-ratio: 1 / 1.15;
+  aspect-ratio: 1/1.05;
   object-fit: contain;
-  transition: transform .4s var(--ease);
+  transition: transform .35s var(--ease);
 }
-.magnetic-bracelet-card:hover img { transform: translateY(-6px); }
-.magnetic-bracelet-card strong {
-  display: block;
-  margin-top: 12px;
-  font: 400 20px/1.05 var(--heading);
-}
+.magnetic-bracelet-card:hover img { transform: translateY(-5px); }
+.magnetic-bracelet-card strong { display: block; margin-top: 10px; font: 400 22px/1.05 var(--heading); }
 .magnetic-bracelet-card span {
   display: block;
   margin-top: 6px;
-  color: #c6a860;
+  color: var(--rust);
   font-size: 8px;
   letter-spacing: .11em;
   text-transform: uppercase;
 }
 .magnetic-safety {
   max-width: 1480px;
-  margin: 26px auto 0;
-  padding: 18px 22px;
-  border: 1px solid rgba(255,255,255,.15);
-  color: #aaa59b;
-  font-size: 10px;
+  margin: 24px auto 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  color: #6e685f;
+  background: #fbfaf6;
+  font-size: 9px;
   line-height: 1.6;
 }
-.magnetic-safety strong { color: #ece7dd; font-weight: 500; }
+.magnetic-safety strong { color: var(--ink); font-weight: 500; }
 
-/* Breathing Rituals */
-.breathing-rituals {
-  background: #dff2f7;
-}
+/* Breathing stays light and uses the actual Breathe Easy packaging. */
+.breathing-rituals { background: #fbfaf6; }
 .breathing-stage {
   max-width: 1480px;
   display: grid;
-  grid-template-columns: .9fr 1.1fr;
-  min-height: 560px;
+  grid-template-columns: 1.1fr .9fr;
   margin: 0 auto;
-  overflow: hidden;
-  border: 1px solid rgba(7,59,86,.16);
-  background: #effbfe;
+  border: 1px solid var(--line);
+  background: #fff;
 }
 .breathing-product-visual {
-  position: relative;
   display: grid;
   place-items: center;
+  min-height: 520px;
   overflow: hidden;
-  background: linear-gradient(145deg,#d7f2f8,#8ccfe0);
+  background: #f5f1e9;
+  border-right: 1px solid var(--line);
 }
-.breathing-product-visual .breath-device {
-  position: relative;
-  width: 210px;
-  height: 300px;
+.breathing-product-visual img {
+  width: 100%;
+  height: 100%;
+  min-height: 520px;
+  object-fit: cover;
 }
-.breath-device::before,
-.breath-device::after {
-  position: absolute;
-  top: 50%;
-  width: 72px;
-  height: 220px;
-  content: "";
-  border: 20px solid #0d6e9a;
-  border-radius: 58px;
-  box-shadow: inset 0 0 0 2px rgba(255,255,255,.28);
-}
-.breath-device::before { left: 34px; transform: translateY(-50%) rotate(17deg); }
-.breath-device::after { right: 34px; transform: translateY(-50%) rotate(-17deg); }
-.breathing-product-visual > span {
-  position: absolute;
-  bottom: 28px;
-  color: #0b4e6e;
-  font-size: 9px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-}
-.breathing-copy {
-  align-self: center;
-  padding: 56px clamp(34px,5vw,76px);
-}
+.breathing-copy { align-self: center; padding: 52px clamp(32px,5vw,70px); }
 .breathing-copy .micro-label {
-  color: #0d6e9a;
+  color: #315f73;
   font-size: 9px;
   letter-spacing: .15em;
   text-transform: uppercase;
 }
 .breathing-copy h3 {
   margin: 13px 0 20px;
-  color: #073b56;
-  font: 400 clamp(52px,5vw,76px)/.9 var(--heading);
+  color: var(--ink);
+  font: 400 clamp(50px,5vw,74px)/.9 var(--heading);
 }
-.breathing-copy > p {
-  max-width: 610px;
-  color: #2d5668;
-  font-size: 15px;
-  line-height: 1.65;
-}
-.breathing-facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 26px 0 30px;
-}
+.breathing-copy > p { max-width: 610px; color: #57534c; font-size: 15px; line-height: 1.65; }
+.breathing-facts { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 28px; }
 .breathing-facts span {
   padding: 8px 10px;
-  border: 1px solid rgba(7,59,86,.26);
-  color: #073b56;
+  border: 1px solid var(--line);
+  color: #315f73;
   font-size: 8px;
   letter-spacing: .12em;
   text-transform: uppercase;
 }
 
-/* Ritual Links */
-.ritual-links { background: #f6f2e8; }
-.links-stage {
-  max-width: 1480px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin: 0 auto;
-}
-.links-card {
-  min-width: 0;
-  border: 1px solid rgba(30,30,30,.15);
-  background: #fff;
-}
-.links-card img {
-  width: 100%;
-  height: 420px;
-  padding: 28px;
-  object-fit: contain;
-}
-.links-card-copy { padding: 28px 30px 32px; border-top: 1px solid var(--line); }
-.links-card-copy h3 { margin: 0 0 12px; font: 400 36px/1 var(--heading); }
-.links-card-copy p { margin: 0; color: #625d54; font-size: 13px; line-height: 1.6; }
-.link-part-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-.link-part-chips span { padding: 7px 9px; border: 1px solid var(--line); font-size: 8px; letter-spacing: .11em; text-transform: uppercase; }
-.build-own-card {
-  position: relative;
-  min-height: 540px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 40px;
-  overflow: hidden;
-  color: #f0eee7;
-  background:
-    radial-gradient(circle at 68% 26%, rgba(211,169,86,.28), transparent 17%),
-    repeating-linear-gradient(90deg, transparent 0 44px, rgba(255,255,255,.035) 44px 45px),
-    #20231f;
-}
-.build-own-card::before {
-  position: absolute;
-  inset: 30px;
-  content: "";
-  border: 1px solid rgba(255,255,255,.14);
-}
-.build-own-card .coming {
-  position: relative;
-  z-index: 2;
-  width: max-content;
-  margin-bottom: auto;
-  padding: 8px 10px;
-  border: 1px solid rgba(255,255,255,.24);
-  font-size: 8px;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-.build-own-card h3 {
-  position: relative;
-  z-index: 2;
-  max-width: 470px;
-  margin: 0 0 14px;
-  font: 400 clamp(44px,4vw,68px)/.9 var(--heading);
-}
-.build-own-card p {
-  position: relative;
-  z-index: 2;
-  max-width: 520px;
-  margin: 0;
-  color: #bcb7ad;
-  font-size: 13px;
-  line-height: 1.6;
-}
-
-/* Reframe existing bracelet catalogue as Ritual Wear */
-#wear { border-top: 1px solid var(--line); }
-
-/* phone / tablet */
 @media (max-width: 1100px) {
   .ritual-lines { grid-template-columns: 1fr 1fr; }
-  .ritual-line-card { min-height: 390px; }
-  .magnetic-bracelet-grid { grid-template-columns: repeat(3, 1fr); }
+  .ritual-line-card:nth-child(2) { border-right: 0; }
+  .ritual-line-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .magnetic-feature-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 760px) {
-  .ritual-home { padding: 96px 16px 48px; }
-  .ritual-home-intro {
-    display: block;
-    margin-bottom: 34px;
-  }
-  .ritual-home h1 {
-    margin-top: 18px;
-    font-size: clamp(52px, 15vw, 72px);
-  }
-  .ritual-home-intro-copy {
-    margin-top: 24px;
-    font-size: 14px;
-  }
-  .ritual-lines {
-    grid-template-columns: 1fr;
-    border-left: 0;
-    border-right: 0;
-  }
+  .ritual-home { padding: 96px 16px 40px; }
+  .ritual-home-intro { display: block; margin-bottom: 28px; }
+  .ritual-home h1 { margin-top: 18px; font-size: clamp(52px,15vw,72px); }
+  .ritual-home-intro-copy { margin-top: 22px; font-size: 14px; }
+  .ritual-lines { grid-template-columns: 1fr; }
   .ritual-line-card {
-    min-height: 320px;
-    padding: 22px;
+    min-height: 90px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 17px 18px;
   }
-  .ritual-line-card h2 { font-size: 34px; }
-  .ritual-line-media,
-  .breathe-visual { inset: 105px 0 0; }
-  .ritual-line-card .line-tag { margin-top: auto; }
+  .ritual-line-card:last-child { border-bottom: 0; }
+  .ritual-line-card strong { font-size: 24px; }
 
-  .ritual-division { padding: 74px 16px; }
-  .ritual-section-heading {
-    display: block;
-    margin-bottom: 34px;
-  }
-  .ritual-section-heading h2 {
-    font-size: clamp(46px, 13vw, 62px);
-  }
-  .ritual-section-heading > p {
-    margin-top: 22px;
-    font-size: 13px;
-  }
+  .ritual-division { padding: 72px 16px; }
+  .ritual-section-heading { display: block; margin-bottom: 30px; }
+  .ritual-section-heading h2 { font-size: clamp(46px,13vw,62px); }
+  .ritual-section-heading > p { margin-top: 20px; font-size: 13px; }
 
   .magnetic-note { grid-template-columns: 1fr; }
-  .magnetic-note > div { padding: 22px; }
+  .magnetic-note > div { padding: 20px; }
   .magnetic-note .research-areas { grid-template-columns: 1fr; }
-  .research-areas span {
-    border-left: 0;
-    border-top: 1px solid rgba(255,255,255,.12);
-  }
-  .magnetic-feature-grid { grid-template-columns: 1fr; margin-bottom: 52px; }
+  .research-areas span { border-left: 0; border-top: 1px solid var(--line); }
+
+  .magnetic-feature-grid { grid-template-columns: 1fr; margin-bottom: 48px; }
   .magnetic-feature-media { min-height: 0; grid-template-columns: 1fr 1fr; }
   .magnetic-feature-media img { height: 280px; }
-  .magnetic-feature-media.single img { height: 360px; }
-  .magnetic-feature-copy { padding: 24px 22px 28px; }
+  .magnetic-feature-media.single img { height: 340px; }
+  .magnetic-feature-copy { padding: 22px 20px 26px; }
   .magnetic-feature-copy h3 { font-size: 32px; }
-  .magnetic-bracelet-heading {
-    display: block;
-  }
-  .magnetic-bracelet-heading p { margin-top: 12px; }
-  .magnetic-bracelet-grid {
-    grid-template-columns: 1fr 1fr;
-    overflow: hidden;
-  }
-  .magnetic-bracelet-card { padding: 13px; }
-  .magnetic-bracelet-card strong { font-size: 18px; }
-  .magnetic-safety { font-size: 9px; }
+  .magnetic-buy { display: grid; grid-template-columns: 1fr; }
+  .magnetic-buy label { justify-content: space-between; min-height: 42px; }
+  .magnetic-buy button { min-height: 44px; }
 
-  .breathing-stage { grid-template-columns: 1fr; min-height: 0; }
-  .breathing-product-visual { min-height: 390px; }
-  .breathing-copy { padding: 38px 24px 44px; }
-  .breathing-copy h3 { font-size: clamp(52px, 15vw, 68px); }
+  .magnetic-bracelet-heading { display: block; }
+  .magnetic-bracelet-heading p { margin-top: 10px; }
+  .magnetic-bracelet-grid { grid-template-columns: 1fr; }
+  .magnetic-bracelet-card {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    align-items: center;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .magnetic-bracelet-card:last-child { border-bottom: 0; }
+  .magnetic-bracelet-card img { grid-row: 1/3; }
+  .magnetic-bracelet-card strong { margin: 0; }
+  .magnetic-bracelet-card span { align-self: start; }
+
+  .breathing-stage { grid-template-columns: 1fr; }
+  .breathing-product-visual { min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .breathing-product-visual img { min-height: 0; height: auto; object-fit: contain; }
+  .breathing-copy { padding: 34px 22px 40px; }
+  .breathing-copy h3 { font-size: clamp(48px,14vw,66px); }
   .breathing-copy > p { font-size: 14px; }
 
-  .links-stage { grid-template-columns: 1fr; }
-  .links-card img { height: 330px; padding: 16px; }
-  .links-card-copy { padding: 24px 22px 28px; }
-  .build-own-card { min-height: 430px; padding: 28px 24px; }
-  .build-own-card::before { inset: 16px; }
-
-  /* Header now has broader navigation; keep compact on mobile */
-  .mobile-menu nav a, .mobile-menu nav button { font-size: 31px; }
+  .mobile-menu nav a,
+  .mobile-menu nav button,
+  .mobile-coming-soon { font-size: 30px; }
 }
 
 @media (max-width: 430px) {
   .ritual-home { padding-inline: 14px; }
-  .ritual-line-card { min-height: 300px; }
   .magnetic-feature-media { grid-template-columns: 1fr; }
-  .magnetic-feature-media img { height: 310px; }
-  .magnetic-bracelet-grid { grid-template-columns: 1fr 1fr; }
-  .magnetic-bracelet-card { padding: 10px; }
-  .magnetic-bracelet-card img { aspect-ratio: 1 / 1.05; }
-  .breathing-product-visual { min-height: 340px; }
-  .links-card img { height: 280px; }
+  .magnetic-feature-media img { height: 300px; }
+  .magnetic-bracelet-card { grid-template-columns: 92px 1fr; padding: 12px; }
+  .breathing-copy { padding-inline: 18px; }
 }
 
 @media (max-width: 375px) {
   .ritual-home h1 { font-size: 50px; }
   .header-quote { padding-inline: 8px; font-size: 7px; }
-  .magnetic-bracelet-card strong { font-size: 16px; }
+  .magnetic-bracelet-card strong { font-size: 18px; }
   .magnetic-bracelet-card span { font-size: 7px; }
 }

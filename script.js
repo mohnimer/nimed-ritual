@@ -222,7 +222,45 @@ const products = [
 ];
 
 
+
+// Magnetic Rituals products live in the same wholesale cart, but stay out of the bracelet catalogue.
+products.push(
+  {
+    id: "face-ritual-tool",
+    code: "MAG-FACE",
+    name: "The Face Ritual Tool",
+    category: "magnetic",
+    series: "Magnetic Rituals",
+    hiddenFromCatalogue: true,
+    personalisation: false,
+    preserveLifestyle: true,
+    image: "assets/ritual-expansion/magnetic-face-tool.webp",
+    secondary: "assets/ritual-expansion/magnetic-face-tool-box.webp",
+    lifestyle: "assets/ritual-expansion/magnetic-face-tool-inuse-neck.webp",
+    minQty: 10,
+    maxQty: 30,
+    description: "A stainless-steel facial and neck massage tool for rolling and gua-sha-style gliding, with magnetic inserts as part of the product construction."
+  },
+  {
+    id: "magnetic-spheres-100",
+    code: "MAG-100",
+    name: "100 Magnetic Spheres",
+    category: "magnetic",
+    series: "Magnetic Rituals",
+    hiddenFromCatalogue: true,
+    personalisation: false,
+    preserveLifestyle: true,
+    image: "assets/ritual-expansion/magnetic-spheres-100.webp",
+    lifestyle: "assets/ritual-expansion/magnetic-spheres-100.webp",
+    minQty: 10,
+    maxQty: 9999,
+    description: "A 100-piece set of polished magnetic spheres for adult desktop construction, pattern-making and tactile play."
+  }
+);
+
 const pricing = {
+  "face-ritual-tool": { retail: 200, minQty: 10, maxQty: 30, tiers: [{min:10, unit:150}, {min:20, unit:138}, {min:30, unit:127.50}] },
+  "magnetic-spheres-100": { retail: 150, minQty: 10, maxQty: 9999, requestAt: 50, tiers: [{min:10, unit:112.50}, {min:20, unit:103.50}, {min:30, unit:95.50}] },
   "double-halo-black": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
   "double-halo-white": { retail: 59, p25: 22.00, p50: 20.25, p100: 18.75, p500: 16.50 },
   "meridian-link": { retail: 69, p25: 25.00, p50: 23.00, p100: 21.25, p500: 18.75 },
@@ -247,9 +285,34 @@ function formatAED(value) {
   return `AED ${Number(value).toFixed(Number(value) % 1 ? 2 : 0)}`;
 }
 
+function productQuantityRules(productId) {
+  const product = products.find(item => item.id === productId);
+  const p = pricing[productId] || {};
+  return {
+    min: Number(p.minQty ?? product?.minQty ?? 25),
+    max: Number(p.maxQty ?? product?.maxQty ?? 9999)
+  };
+}
+
+function normaliseQuantity(value, productId) {
+  const rules = productQuantityRules(productId);
+  return Math.max(rules.min, Math.min(rules.max, Math.round(Number(value) || rules.min)));
+}
+
 function tierForQuantity(productId, quantity) {
   const p = pricing[productId];
-  const qty = Math.max(25, Number(quantity) || 25);
+  if (!p) return { unit: null, label: "Price on request", volume: true };
+  const qty = normaliseQuantity(quantity, productId);
+
+  if (Array.isArray(p.tiers)) {
+    if (p.requestAt && qty >= p.requestAt) {
+      return { unit: null, label: `${p.requestAt}+ / request volume pricing`, volume: true };
+    }
+    const available = p.tiers.filter(tier => qty >= tier.min);
+    const selected = available[available.length - 1] || p.tiers[0];
+    return { unit: selected.unit, label: `${selected.min}+ pcs`, volume: false };
+  }
+
   if (qty >= 1000) return { unit: null, label: "Request volume pricing", volume: true };
   if (qty >= 500) return { unit: p.p500, label: "500+ pcs", volume: false };
   if (qty >= 100) return { unit: p.p100, label: "100+ pcs", volume: false };
@@ -257,9 +320,26 @@ function tierForQuantity(productId, quantity) {
   return { unit: p.p25, label: "25+ pcs", volume: false };
 }
 
+function wholesaleLadder(productId) {
+  const p = pricing[productId];
+  if (Array.isArray(p?.tiers)) {
+    const bits = p.tiers.map(t => `${t.min} pcs <strong>${formatAED(t.unit)}</strong>`);
+    if (p.requestAt) bits.push(`${p.requestAt}+ <strong>Request volume pricing</strong>`);
+    return bits.join(" · ");
+  }
+  return `25 pcs <strong>${formatAED(p.p25)}</strong> · 50 pcs <strong>${formatAED(p.p50)}</strong> · 100 pcs <strong>${formatAED(p.p100)}</strong> · 500 pcs <strong>${formatAED(p.p500)}</strong> · 1,000+ <strong>Request volume pricing</strong>`;
+}
+
+function wholesaleStart(productId) {
+  const p = pricing[productId];
+  if (Array.isArray(p?.tiers)) return { unit: p.tiers[0].unit, qty: p.tiers[0].min };
+  return { unit: p.p25, qty: 25 };
+}
+
 // Archive Edition lifestyle art: consistent 1970s editorial scenes while the
 // clean product and construction views remain untouched.
 products.forEach(product => {
+  if (product.preserveLifestyle) return;
   product.lifestyle = `assets/catalogue-lifestyle-70s/${product.id}.webp`;
   delete product.lifestyleFemale;
 });
@@ -324,8 +404,7 @@ try {
   const savedQuote = JSON.parse(localStorage.getItem(quoteStorageKey) || "[]");
   quote = new Map(
     savedQuote
-      .filter(([id]) => products.some(product => product.id === id))
-      .map(([id, item]) => [id, normaliseQuoteItem(item)])
+      .map(([id, item]) => [id, normaliseQuoteItem(item, id)])
   );
 } catch {
   quote = new Map();
@@ -428,7 +507,8 @@ function animateQuoteConfirmation(source) {
 }
 
 function renderProducts(filter = "all") {
-  const visible = filter === "all" ? products : products.filter(product => product.category === filter);
+  const catalogueProducts = products.filter(product => !product.hiddenFromCatalogue);
+  const visible = filter === "all" ? catalogueProducts : catalogueProducts.filter(product => product.category === filter);
   productCount.textContent = visible.length;
   productGrid.innerHTML = visible.map((product, index) => `
     <article class="product-card">
@@ -444,7 +524,7 @@ function renderProducts(filter = "all") {
             ${product.unisex ? '<span class="product-unisex-label">UNISEX</span>' : ''}
             <div class="product-price-block">
               <strong>RRP ${formatAED(pricing[product.id].retail)}</strong>
-              <span>Wholesale from ${formatAED(pricing[product.id].p25)} / pc · MOQ 25</span>
+              <span>Wholesale from ${formatAED(wholesaleStart(product.id).unit)} / pc · MOQ ${wholesaleStart(product.id).qty}</span>
             </div>
             <p class="product-personalisation">Engraving / Medical ID / QR*</p>
           </div>
@@ -453,7 +533,7 @@ function renderProducts(filter = "all") {
       </button>
       <div class="product-card-actions">
         <label class="quantity-field">Qty
-          <input type="number" min="25" max="9999" step="1" value="${quote.get(product.id)?.quantity || 25}" inputmode="numeric" data-card-quantity="${product.id}" aria-label="Quantity for ${product.name}">
+          <input type="number" min="${productQuantityRules(product.id).min}" max="${productQuantityRules(product.id).max}" step="1" value="${quote.get(product.id)?.quantity || productQuantityRules(product.id).min}" inputmode="numeric" data-card-quantity="${product.id}" aria-label="Quantity for ${product.name}">
         </label>
         <button class="add-quote-button" type="button" data-add-product="${product.id}">Add to wholesale cart</button>
       </div>
@@ -491,15 +571,19 @@ $$('[data-filter]').forEach(button => {
 function openProduct(productId) {
   const product = products.find(item => item.id === productId);
   if (!product) return;
-  const quoteItem = quote.get(product.id) || normaliseQuoteItem(25);
+  const quoteItem = quote.get(product.id) || normaliseQuoteItem(productQuantityRules(product.id).min, product.id);
   $("[data-dialog-code]").textContent = `${product.code} / ${product.category === "silicon" ? "Silicon series" : product.category}`;
   $("[data-dialog-name]").textContent = product.name;
   $("[data-dialog-description]").textContent = product.description;
   $("[data-dialog-series]").textContent = product.series;
   $("[data-dialog-retail]").textContent = formatAED(pricing[product.id].retail);
-  $("[data-dialog-wholesale]").innerHTML = `25 pcs <strong>${formatAED(pricing[product.id].p25)}</strong> · 50 pcs <strong>${formatAED(pricing[product.id].p50)}</strong> · 100 pcs <strong>${formatAED(pricing[product.id].p100)}</strong> · 500 pcs <strong>${formatAED(pricing[product.id].p500)}</strong> · 1,000+ <strong>Request volume pricing</strong>`;
+  $("[data-dialog-wholesale]").innerHTML = wholesaleLadder(product.id);
+  const personalisationPanel = $(".personalisation-panel");
+  if (personalisationPanel) personalisationPanel.hidden = product.personalisation === false;
   const unisexLabel = $("[data-dialog-unisex]");
   unisexLabel.hidden = !product.unisex;
+  $("[data-dialog-quantity]").min = productQuantityRules(product.id).min;
+  $("[data-dialog-quantity]").max = productQuantityRules(product.id).max;
   $("[data-dialog-quantity]").value = quoteItem.quantity;
   $("[data-dialog-engraving]").checked = quoteItem.engraving;
   $("[data-dialog-engraving-text]").value = quoteItem.engravingText;
@@ -509,10 +593,10 @@ function openProduct(productId) {
   $("[data-dialog-add-status]").textContent = "";
   dialog.dataset.productId = product.id;
   galleryViews = [
-    { key: "primary", source: product.image, alt: `${product.name} bracelet, product view 1` },
-    product.secondary ? { key: "secondary", source: product.secondary, alt: `${product.name} bracelet, product view 2` } : null,
-    { key: "lifestyle", source: product.lifestyle, alt: `${product.name} bracelet worn` },
-    product.lifestyleFemale ? { key: "lifestyle-female", source: product.lifestyleFemale, alt: `${product.name} bracelet worn by a woman` } : null
+    { key: "primary", source: product.image, alt: `${product.name}, product view 1` },
+    product.secondary ? { key: "secondary", source: product.secondary, alt: `${product.name}, product view 2` } : null,
+    { key: "lifestyle", source: product.lifestyle, alt: `${product.name}, in use` },
+    product.lifestyleFemale ? { key: "lifestyle-female", source: product.lifestyleFemale, alt: `${product.name}, in use` } : null
   ].filter(Boolean);
   galleryIndex = 0;
   renderGalleryView();
@@ -619,16 +703,12 @@ $$('[data-series]').forEach(button => button.addEventListener("click", () => upd
 $("[data-series-product]").dataset.productId = "obsidian-link";
 $("[data-series-product]").addEventListener("click", event => openProduct(event.currentTarget.dataset.productId));
 
-function normaliseQuantity(value) {
-  return Math.max(25, Math.min(9999, Math.round(Number(value) || 25)));
-}
-
-function normaliseQuoteItem(value) {
+function normaliseQuoteItem(value, productId) {
   if (typeof value === "number" || typeof value === "string") {
-    return { quantity: normaliseQuantity(value), engraving: false, engravingText: "", medicalId: false, medicalQr: false };
+    return { quantity: normaliseQuantity(value, productId), engraving: false, engravingText: "", medicalId: false, medicalQr: false };
   }
   return {
-    quantity: normaliseQuantity(value?.quantity),
+    quantity: normaliseQuantity(value?.quantity, productId),
     engraving: Boolean(value?.engraving),
     engravingText: String(value?.engravingText || "").trim().slice(0, 80),
     medicalId: Boolean(value?.medicalId),
@@ -662,12 +742,12 @@ function updateQuoteSummary() {
 
 function addToQuote(productId, value, personalisation) {
   if (!products.some(product => product.id === productId)) return;
-  const current = quote.get(productId) || normaliseQuoteItem(25);
+  const current = quote.get(productId) || normaliseQuoteItem(productQuantityRules(productId).min, productId);
   quote.set(productId, normaliseQuoteItem({
     ...current,
     ...(personalisation || {}),
     quantity: value
-  }));
+  }, productId));
   saveQuote();
   renderQuote();
 }
@@ -680,7 +760,7 @@ function renderQuote() {
 
   empty.hidden = hasItems;
   content.hidden = !hasItems;
-  items.innerHTML = [...quote.entries()].map(([productId, item]) => {
+  items.innerHTML = [...quote.entries()].filter(([productId]) => products.some(product => product.id === productId)).map(([productId, item]) => {
     const product = products.find(item => item.id === productId);
     const options = [
       item.engraving ? `Text engraving${item.engravingText ? `: &ldquo;${escapeHtml(item.engravingText)}&rdquo;` : ": copy to confirm"}` : "",
@@ -689,16 +769,16 @@ function renderQuote() {
     ].filter(Boolean);
     return `
       <article class="quote-item">
-        <img src="${product.image}" alt="${product.name} bracelet">
+        <img src="${product.image}" alt="${product.name}">
         <div class="quote-item-copy">
           <h3>${product.name}</h3>
           <p>${product.code} / ${product.series}</p>
-          ${(() => { const tier = tierForQuantity(product.id, item.quantity); const total = tier.unit ? tier.unit * item.quantity : null; return `<div class="quote-item-price"><span>RRP ${formatAED(pricing[product.id].retail)}</span><strong>${tier.volume ? "Request volume pricing" : `${formatAED(tier.unit)} / pc`}</strong><span>${total ? `Line total ${formatAED(total)}` : "1,000+ pcs · final project price on request"}</span></div>`; })()}
+          ${(() => { const tier = tierForQuantity(product.id, item.quantity); const total = tier.unit ? tier.unit * item.quantity : null; return `<div class="quote-item-price"><span>RRP ${formatAED(pricing[product.id].retail)}</span><strong>${tier.volume ? "Request volume pricing" : `${formatAED(tier.unit)} / pc`}</strong><span>${total ? `Line total ${formatAED(total)}` : tier.label}</span></div>`; })()}
           ${options.length ? `<p class="quote-item-options">${options.join("<br>")}</p>` : ""}
         </div>
-        <input type="number" min="25" max="9999" step="1" value="${item.quantity}" inputmode="numeric" data-quote-quantity="${product.id}" aria-label="Quantity for ${product.name}">
+        <input type="number" min="${productQuantityRules(product.id).min}" max="${productQuantityRules(product.id).max}" step="1" value="${item.quantity}" inputmode="numeric" data-quote-quantity="${product.id}" aria-label="Quantity for ${product.name}">
         <div class="quote-item-actions">
-          <button type="button" data-quote-edit="${product.id}">Edit options</button>
+          ${product.personalisation === false ? "" : `<button type="button" data-quote-edit="${product.id}">Edit options</button>`}
           <button type="button" data-quote-remove="${product.id}">Remove</button>
         </div>
       </article>
@@ -707,7 +787,7 @@ function renderQuote() {
 
   $$('[data-quote-quantity]', items).forEach(input => {
     input.addEventListener("change", () => {
-      const quantity = normaliseQuantity(input.value);
+      const quantity = normaliseQuantity(input.value, input.dataset.quoteQuantity);
       input.value = quantity;
       const item = quote.get(input.dataset.quoteQuantity);
       quote.set(input.dataset.quoteQuantity, { ...item, quantity });
@@ -795,10 +875,10 @@ function buildQuoteRequest() {
     `Email: ${buyer.email || "-"}`,
     `Phone: ${buyer.phone || "-"}`,
     "",
-    "REQUESTED MODELS",
+    "REQUESTED PRODUCTS",
     ...lines,
     "",
-    `Models: ${totals.models}`,
+    `Products: ${totals.models}`,
     `Total units: ${totals.units}`,
     `Notes: ${buyer.notes || "-"}`,
     ...(includesPersonalisation ? ["", "Personalisation artwork and placement require buyer approval before production."] : []),
