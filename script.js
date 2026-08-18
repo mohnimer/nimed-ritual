@@ -8,7 +8,8 @@ const products = [
     category: "hybrid",
     series: "Modern Statements",
     unisex: true,
-    image: "assets/catalogue-transparent/double-halo-black.webp",
+    image: "assets/catalogue-inuse-updated/double-halo-black-main.png",
+    secondary: "assets/catalogue-transparent/double-halo-black.webp",
     lifestyle: "assets/catalogue-lifestyle/double-halo-black.webp",
     lifestyleFemale: "assets/catalogue-lifestyle-women/double-halo-black.webp",
     description: "A silicon-and-steel hybrid defined by bold inlays and twin crystal accents, designed for confident everyday wear. Get in black or white."
@@ -32,10 +33,10 @@ const products = [
     category: "steel",
     series: "Modern Statements",
     unisex: true,
-    image: "assets/catalogue-transparent/meridian-link-v2.webp",
-    secondary: "assets/catalogue-angle-transparent/meridian-link-v2.webp",
-    lifestyle: "assets/catalogue-lifestyle/meridian-link.webp",
-    lifestyleFemale: "assets/catalogue-lifestyle-women/meridian-link.webp",
+    image: "assets/catalogue-inuse-updated/meridian-link-main.png",
+    secondary: "assets/catalogue-transparent/meridian-link-v2.webp",
+    lifestyle: "assets/catalogue-angle-transparent/meridian-link-v2.webp",
+    lifestyleFemale: "assets/catalogue-lifestyle/meridian-link.webp",
     description: "A slim articulated steel bracelet with repeating architectural links for a sharp, understated finish."
   },
   {
@@ -56,9 +57,9 @@ const products = [
     name: "The Axis",
     category: "hybrid",
     series: "Signature Edit",
-    image: "assets/catalogue-transparent/axis.webp",
-    secondary: "assets/catalogue-angle-transparent/axis.webp",
-    lifestyle: "assets/catalogue-lifestyle/axis.webp",
+    image: "assets/catalogue-inuse-updated/axis-main.png",
+    secondary: "assets/catalogue-transparent/axis.webp",
+    lifestyle: "assets/catalogue-angle-transparent/axis.webp",
     description: "Minimal and architectural, balancing a clean steel plate with dual black cords."
   },
   {
@@ -78,9 +79,10 @@ const products = [
     name: "The Halo Line",
     category: "hybrid",
     series: "Hybrid Series",
-    image: "assets/catalogue-transparent/halo-line.webp",
-    secondary: "assets/catalogue-angle-transparent/halo-line.webp",
-    lifestyle: "assets/catalogue-lifestyle-women/halo-line.webp",
+    image: "assets/catalogue-inuse-updated/halo-line-main.png",
+    secondary: "assets/catalogue-transparent/halo-line.webp",
+    lifestyle: "assets/catalogue-angle-transparent/halo-line.webp",
+    lifestyleFemale: "assets/catalogue-lifestyle-women/halo-line.webp",
     description: "Bright steel with dark edge inlays and a crystal-set center plaque."
   },
   {
@@ -116,10 +118,10 @@ const products = [
     category: "woven",
     series: "Woven Spirit",
     unisex: true,
-    image: "assets/catalogue-transparent/national.webp",
-    secondary: "assets/catalogue-angle-transparent/national.webp",
-    lifestyle: "assets/catalogue-lifestyle/national.webp",
-    lifestyleFemale: "assets/catalogue-lifestyle-women/national.webp",
+    image: "assets/catalogue-inuse-updated/national-main.png",
+    secondary: "assets/catalogue-transparent/national.webp",
+    lifestyle: "assets/catalogue-angle-transparent/national.webp",
+    lifestyleFemale: "assets/catalogue-lifestyle/national.webp",
     description: "A black woven double-cord bracelet with crisp white patterning and a UAE flag centerpiece for a sharper, graphic look."
   },
   {
@@ -142,10 +144,10 @@ const products = [
     category: "woven",
     series: "Woven Spirit",
     unisex: true,
-    image: "assets/catalogue-transparent/tide.webp",
-    secondary: "assets/catalogue-angle-transparent/tide.webp",
-    lifestyle: "assets/catalogue-lifestyle/tide.webp",
-    lifestyleFemale: "assets/catalogue-lifestyle-women/tide.webp",
+    image: "assets/catalogue-inuse-updated/tide-main.png",
+    secondary: "assets/catalogue-transparent/tide.webp",
+    lifestyle: "assets/catalogue-angle-transparent/tide.webp",
+    lifestyleFemale: "assets/catalogue-inuse-updated/tide-alt.png",
     description: "A light woven cord bracelet finished with matte black hardware and subtle typographic detailing for an easy, casual statement."
   },
   {
@@ -190,9 +192,9 @@ const products = [
     name: "The Red Orbit",
     category: "hybrid",
     series: "New Arrivals",
-    image: "assets/catalogue-transparent/red-medallion.webp",
-    secondary: "assets/catalogue-angle-transparent/red-medallion-v2.webp",
-    lifestyle: "assets/catalogue-lifestyle/red-medallion.webp",
+    image: "assets/catalogue-inuse-updated/red-medallion-main.png",
+    secondary: "assets/catalogue-transparent/red-medallion.webp",
+    lifestyle: "assets/catalogue-angle-transparent/red-medallion-v2.webp",
     description: "A bold black strap framed by polished steel and a circular red nine-point centerpiece."
   },
   {

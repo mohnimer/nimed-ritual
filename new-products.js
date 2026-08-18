@@ -10,9 +10,10 @@ products.push(
     category: "hybrid",
     series: "Ion Balance",
     unisex: true,
-    image: ionAssets.white_primary,
+    image: "assets/catalogue-inuse-updated/polar-link-main.png",
     secondary: ionAssets.white_secondary,
-    lifestyle: ionAssets.white_lifestyle,
+    lifestyle: ionAssets.white_primary,
+    lifestyleFemale: ionAssets.white_lifestyle,
     description: "White silicone and articulated stainless steel with concealed magnetic inserts and a clean Nimed face."
   },
   {
@@ -22,9 +23,10 @@ products.push(
     category: "hybrid",
     series: "Ion Balance",
     unisex: true,
-    image: ionAssets.blue_primary,
-    secondary: ionAssets.blue_secondary,
-    lifestyle: ionAssets.blue_lifestyle,
+    image: "assets/catalogue-inuse-updated/cobalt-ion-main.png",
+    secondary: ionAssets.blue_primary,
+    lifestyle: ionAssets.blue_secondary,
+    lifestyleFemale: ionAssets.blue_lifestyle,
     description: "Cobalt-blue silicone with brushed steel, articulated links and an engraved Nimed balance plate."
   },
   {
