@@ -504,6 +504,201 @@
     });
   }
 
+
+
+  /* ----------------------------------------------------------
+     RITUAL / IN USE — 70s magazine-inspired hero slideshow
+     Photography is supplied by RITUAL; no generated imagery.
+     ---------------------------------------------------------- */
+  function installEditorialHero() {
+    if (document.querySelector(".editorial-hero")) return;
+
+    if (!document.querySelector('link[href="hero-editorial.css"]')) {
+      const css = document.createElement("link");
+      css.rel = "stylesheet";
+      css.href = "hero-editorial.css";
+      document.head.appendChild(css);
+    }
+
+    const chooser = document.getElementById("top");
+    if (!chooser) return;
+    chooser.id = "ritual-chooser";
+
+    const slides = [
+      {
+        image: "assets/hero-archive/01-daily-edit.jpeg",
+        pos: "54% 54%",
+        overline: "RITUAL / THE DAILY EDIT",
+        title: "Worn into <em>life.</em>",
+        deck: "Bracelets made to leave the product shot and enter the everyday — hands, records, cameras, roads and routines.",
+        caption: "IN USE / ISSUE 01 / DAILY OBJECTS"
+      },
+      {
+        image: "assets/hero-archive/02-silver-edit.jpeg",
+        pos: "51% 48%",
+        overline: "RITUAL / THE SILVER EDIT",
+        title: "Quiet. <em>Not invisible.</em>",
+        deck: "Clean stainless steel, soft light and the kind of styling that feels found rather than staged.",
+        caption: "IN USE / ISSUE 02 / SILVER"
+      },
+      {
+        image: "assets/hero-archive/03-archive-edit.jpeg",
+        pos: "56% 52%",
+        overline: "RITUAL / THE ARCHIVE EDIT",
+        title: "Back in <em>circulation.</em>",
+        deck: "A bracelet beside old sleeves, paper, timber and warm afternoon light — more archive than advertisement.",
+        caption: "IN USE / ISSUE 03 / ARCHIVE"
+      },
+      {
+        image: "assets/hero-archive/04-club-edit.jpeg",
+        pos: "58% 49%",
+        overline: "RITUAL / THE CLUB EDIT",
+        title: "Colour with <em>history.</em>",
+        deck: "Club identity treated like vintage leisurewear: easy, nostalgic and built to live beyond match day.",
+        caption: "IN USE / ISSUE 04 / CLUB COLOUR"
+      },
+      {
+        image: "assets/hero-archive/05-leisure-edit.jpeg",
+        pos: "49% 52%",
+        overline: "RITUAL / THE LEISURE EDIT",
+        title: "Match day. <em>Off duty.</em>",
+        deck: "A softer side of supporter culture — sun-faded colour, paperback pages and an everyday wrist.",
+        caption: "IN USE / ISSUE 05 / LEISURE"
+      },
+      {
+        image: "assets/hero-archive/06-personal-edit.jpeg",
+        pos: "49% 49%",
+        overline: "RITUAL / THE PERSONAL EDIT",
+        title: "Make it <em>yours.</em>",
+        deck: "Personalisation belongs in the object, not on top of it. Engraving, Medical ID and QR options are built into the catalogue flow.",
+        caption: "IN USE / ISSUE 06 / PERSONAL"
+      },
+      {
+        image: "assets/hero-archive/07-road-edit.jpeg",
+        pos: "51% 49%",
+        overline: "RITUAL / THE ROAD EDIT",
+        title: "Sound. Sun. <em>Steel.</em>",
+        deck: "The collection photographed the way it should feel: tactile, warm, slightly imperfect and already part of a story.",
+        caption: "IN USE / ISSUE 07 / ROAD"
+      }
+    ];
+
+    const hero = document.createElement("section");
+    hero.className = "editorial-hero is-running";
+    hero.id = "top";
+    hero.setAttribute("aria-label", "RITUAL in-use editorial slideshow");
+
+    hero.innerHTML = `
+      <div class="editorial-hero-masthead" aria-hidden="true">
+        <strong>RITUAL</strong>
+        <span>In use / archive 71</span>
+      </div>
+      <div class="editorial-hero-track">
+        ${slides.map((slide, index) => `
+          <article class="editorial-hero-slide${index === 0 ? " is-active" : ""}" data-editorial-slide="${index}" aria-hidden="${index === 0 ? "false" : "true"}">
+            <div class="editorial-hero-media" style="--hero-pos:${slide.pos}">
+              <img src="${slide.image}" alt="RITUAL bracelet photographed in a warm archival-inspired everyday setting" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
+            </div>
+            <div class="editorial-hero-copy">
+              <div class="editorial-hero-kicker"><span>NIMED / RITUAL / DUBAI</span><span>VOL. 71</span></div>
+              <div class="editorial-hero-title-wrap">
+                <p class="editorial-hero-overline">${slide.overline}</p>
+                <h1 class="editorial-hero-title">${slide.title}</h1>
+                <p class="editorial-hero-deck">${slide.deck}</p>
+                <div class="editorial-hero-actions">
+                  <a href="#collection">Browse bracelets →</a>
+                  <a href="#magnetic">Hybrid magnet edit →</a>
+                </div>
+              </div>
+              <div class="editorial-hero-footer">
+                <span class="editorial-hero-caption">${slide.caption}<br>WHOLESALE CATALOGUE / 2026</span>
+                <span class="editorial-hero-issue">New</span>
+              </div>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+      <div class="editorial-hero-controls" aria-label="Slideshow controls">
+        <div class="editorial-hero-arrows">
+          <button type="button" data-editorial-prev aria-label="Previous slide">←</button>
+          <button type="button" data-editorial-next aria-label="Next slide">→</button>
+        </div>
+        <div class="editorial-hero-progress" aria-hidden="true"><span></span></div>
+        <div class="editorial-hero-count" aria-live="polite"><span data-editorial-current>01</span> / 07</div>
+      </div>
+      <div class="editorial-hero-dots" aria-label="Choose slideshow image">
+        ${slides.map((_, index) => `<button type="button" data-editorial-dot="${index}" aria-label="Go to slide ${index + 1}" aria-current="${index === 0 ? "true" : "false"}"></button>`).join("")}
+      </div>
+    `;
+
+    chooser.parentNode.insertBefore(hero, chooser);
+
+    const slideEls = [...hero.querySelectorAll("[data-editorial-slide]")];
+    const dots = [...hero.querySelectorAll("[data-editorial-dot]")];
+    const counter = hero.querySelector("[data-editorial-current]");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let current = 0;
+    let timer = null;
+    let pointerStart = null;
+
+    const restartProgress = () => {
+      hero.classList.remove("is-running");
+      void hero.offsetWidth;
+      if (!reducedMotion) hero.classList.add("is-running");
+    };
+
+    const show = (next, userInitiated = false) => {
+      current = (next + slides.length) % slides.length;
+      slideEls.forEach((slide, index) => {
+        const active = index === current;
+        slide.classList.toggle("is-active", active);
+        slide.setAttribute("aria-hidden", String(!active));
+      });
+      dots.forEach((dot, index) => dot.setAttribute("aria-current", String(index === current)));
+      if (counter) counter.textContent = String(current + 1).padStart(2, "0");
+      restartProgress();
+      if (userInitiated) schedule();
+    };
+
+    const schedule = () => {
+      window.clearInterval(timer);
+      if (reducedMotion || document.hidden) return;
+      timer = window.setInterval(() => show(current + 1, false), 6500);
+    };
+
+    hero.querySelector("[data-editorial-prev]")?.addEventListener("click", () => show(current - 1, true));
+    hero.querySelector("[data-editorial-next]")?.addEventListener("click", () => show(current + 1, true));
+    dots.forEach(dot => dot.addEventListener("click", () => show(Number(dot.dataset.editorialDot), true)));
+
+    hero.addEventListener("mouseenter", () => window.clearInterval(timer));
+    hero.addEventListener("mouseleave", schedule);
+    hero.addEventListener("focusin", () => window.clearInterval(timer));
+    hero.addEventListener("focusout", event => {
+      if (!hero.contains(event.relatedTarget)) schedule();
+    });
+
+    hero.addEventListener("keydown", event => {
+      if (event.key === "ArrowLeft") show(current - 1, true);
+      if (event.key === "ArrowRight") show(current + 1, true);
+    });
+
+    hero.addEventListener("pointerdown", event => {
+      if (event.pointerType === "mouse") return;
+      pointerStart = { x: event.clientX, y: event.clientY };
+    }, { passive: true });
+    hero.addEventListener("pointerup", event => {
+      if (!pointerStart || event.pointerType === "mouse") return;
+      const dx = event.clientX - pointerStart.x;
+      const dy = event.clientY - pointerStart.y;
+      pointerStart = null;
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.25) show(current + (dx < 0 ? 1 : -1), true);
+    }, { passive: true });
+
+    document.addEventListener("visibilitychange", schedule);
+    schedule();
+  }
+
+  installEditorialHero();
   injectMagnetStyles();
   relabelMagneticExperience();
   renderMagneticBracelets();
