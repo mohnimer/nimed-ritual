@@ -1,0 +1,162 @@
+/* ==========================================================================
+   RITUAL — HOTFIX V2
+   Load AFTER the site's existing stylesheet.
+   ========================================================================== */
+
+/* Editorial titles: allow deliberate 1–2 line wrapping, tightly spaced. */
+:is(.ritual-title, .section-title, .catalogue-title, .editorial-title,
+    .collection-title, .page-title, .hero-title, h1, h2).ritual-display-title,
+:is(.ritual-title, .section-title, .catalogue-title, .editorial-title,
+    .collection-title, .page-title) {
+  white-space: normal !important;
+  text-wrap: balance;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: .90 !important;
+  letter-spacing: -0.025em;
+}
+
+/* Product-card titles remain normal case and standard catalogue styling. */
+.product-card h2,
+.product-card h3,
+.catalogue-card h2,
+.catalogue-card h3,
+.collection-card h2,
+.collection-card h3,
+[data-product-card] h2,
+[data-product-card] h3 {
+  white-space: normal !important;
+  text-transform: none !important;
+  line-height: 1.02 !important;
+}
+
+/* Category selector */
+.ritual-category-selector,
+.category-selector,
+.catalogue-filter,
+.catalog-filter,
+[data-category-selector] {
+  position: relative;
+  z-index: 20;
+}
+
+:is(.ritual-category-selector, .category-selector, .catalogue-filter,
+    .catalog-filter, [data-category-selector])
+:is(button, [role="button"], a) {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+}
+
+:is(.ritual-category-selector, .category-selector, .catalogue-filter,
+    .catalog-filter, [data-category-selector])
+:is(button, [role="button"], a).is-active {
+  background: #24251f !important;
+  color: #fffdf8 !important;
+  box-shadow: inset 0 -5px 0 #c7502f;
+}
+
+.ritual-filter-hidden {
+  display: none !important;
+}
+
+/* HARD DELETE TARGET:
+   JS adds this class to the entire standalone Magnetic Hybrid editorial section.
+   This hides it immediately even before the node is removed. */
+.ritual-delete-magnetic-editorial {
+  display: none !important;
+}
+
+/* Standard catalogue card treatment for every category, including Magnetic Hybrid. */
+:is(.product-card, .catalogue-card, .collection-card, [data-product-card]) {
+  background: transparent !important;
+}
+
+:is(.product-card, .catalogue-card, .collection-card, [data-product-card])
+:is(.product-image, .card-image, .image-wrap, .media, .product-media, figure) {
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+/* HOME HERO */
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider]) {
+  position: relative !important;
+  overflow: hidden;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-prev, .hero-next, .slider-prev, .slider-next, .carousel-prev, .carousel-next,
+    [data-prev], [data-next], [aria-label*="previous" i], [aria-label*="next" i]) {
+  position: absolute !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  z-index: 30 !important;
+  margin: 0 !important;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-prev, .slider-prev, .carousel-prev, [data-prev], [aria-label*="previous" i]) {
+  left: 24px !important;
+  right: auto !important;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-next, .slider-next, .carousel-next, [data-next], [aria-label*="next" i]) {
+  right: 24px !important;
+  left: auto !important;
+}
+
+.ritual-hero-slide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 7px, 0) scale(1.004);
+  transition:
+    opacity 560ms cubic-bezier(.22,.61,.36,1),
+    transform 700ms cubic-bezier(.22,.61,.36,1),
+    visibility 0s linear 700ms;
+  will-change: opacity, transform;
+}
+
+.ritual-hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0,0,0) scale(1);
+  transition-delay: 0s;
+}
+
+.ritual-hero-layered {
+  position: relative !important;
+}
+
+.ritual-hero-layered > .ritual-hero-slide {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.ritual-hero-layered > .ritual-hero-slide.is-active {
+  position: relative !important;
+}
+
+@media (max-width: 767px) {
+  :is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+  :is(.hero-prev, .slider-prev, .carousel-prev, [data-prev], [aria-label*="previous" i]) {
+    left: 12px !important;
+  }
+
+  :is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+  :is(.hero-next, .slider-next, .carousel-next, [data-next], [aria-label*="next" i]) {
+    right: 12px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ritual-hero-slide {
+    transform: none !important;
+    transition: opacity 140ms linear !important;
+  }
+}
