@@ -1,12 +1,12 @@
 (() => {
-  const magneticIds = ["polar-link", "cobalt-ion", "ion-arc"];
+  const magneticIds = (typeof products !== "undefined" ? products : [])
+    .filter(product => product.category === "hybrid")
+    .map(product => product.id);
   const magneticSet = new Set(magneticIds);
 
-  const magneticProductCopy = {
-    "polar-link": "Hybrid magnet bracelet",
-    "cobalt-ion": "Hybrid magnet bracelet",
-    "ion-arc": "Hybrid magnet bracelet"
-  };
+  const magneticProductCopy = Object.fromEntries(
+    magneticIds.map(id => [id, "Magnetic hybrid bracelet"])
+  );
 
   function injectMagnetStyles() {
     if (document.getElementById("ritual-magnet-focus-styles")) return;
@@ -42,7 +42,7 @@
         color: var(--ink);
       }
       .magnetic-rituals.magnet-focus .ritual-section-heading h2::after {
-        content: "MAGNETIC INSERTS / SELECTED MODELS";
+        content: "MAGNETIC CONSTRUCTION / ALL HYBRID MODELS";
         display: block;
         margin-top: 18px;
         font: 600 9px/1.2 var(--body);
@@ -286,15 +286,15 @@
       const title = homeCard.querySelector("strong");
       const action = homeCard.querySelector("b");
       if (label) label.textContent = "02 / MAGNETIC RITUALS";
-      if (title) title.textContent = "HYBRID MAGNET BRACELETS";
+      if (title) title.textContent = "MAGNETIC HYBRID BRACELETS";
       if (action) action.textContent = "Magnets + tools →";
     }
 
     const desktopNav = document.querySelector('.desktop-nav a[href="#magnetic"]');
-    if (desktopNav) desktopNav.textContent = "Hybrid Magnet";
+    if (desktopNav) desktopNav.textContent = "Magnetic Hybrid";
 
     const mobileNav = document.querySelector('.mobile-menu a[href="#magnetic"]');
-    if (mobileNav) mobileNav.innerHTML = '<span>03</span> Hybrid Magnet Bracelets';
+    if (mobileNav) mobileNav.innerHTML = '<span>03</span> Magnetic Hybrid Bracelets';
 
     const section = document.querySelector("#magnetic");
     if (!section) return;
@@ -304,8 +304,8 @@
     const title = section.querySelector("#magnetic-title");
     const intro = section.querySelector(".ritual-section-heading > p");
     if (sectionIndex) sectionIndex.textContent = "04 / Magnetic Rituals";
-    if (title) title.innerHTML = "Hybrid Magnet<br>Bracelets";
-    if (intro) intro.textContent = "A selected bracelet line combining steel, silicone and visible magnetic inserts — plus a small edit of magnetic tools and objects.";
+    if (title) title.innerHTML = "Magnetic Hybrid<br>Bracelets";
+    if (intro) intro.textContent = "Every bracelet in the Hybrid category is a Magnetic Hybrid Bracelet — combining mixed materials with integrated magnetic construction, alongside a small edit of magnetic tools and objects.";
 
     const note = section.querySelector(".magnetic-note");
     if (note) {
@@ -314,12 +314,12 @@
       const noteText = note.querySelector("p:not(.section-index)");
       if (noteIndex) noteIndex.textContent = "Magnetic construction";
       if (noteTitle) noteTitle.textContent = "Magnetism, built in.";
-      if (noteText) noteText.textContent = "On these selected products, magnets are a visible part of the construction and the product story. RITUAL presents magnetism as a distinctive material feature and tactile novelty — not as medical treatment.";
+      if (noteText) noteText.textContent = "Across the entire Hybrid bracelet category, magnetism is part of the construction and product story. RITUAL presents it as a distinctive material feature and tactile novelty — not as medical treatment.";
       const areas = note.querySelector(".research-areas");
       if (areas) areas.innerHTML = `
-        <span><strong>01 / visible</strong>Magnetic inserts</span>
-        <span><strong>02 / hybrid</strong>Steel + silicone construction</span>
-        <span><strong>03 / selected</strong>Verified magnetic models only</span>
+        <span><strong>01 / magnetic</strong>Integrated magnetic construction</span>
+        <span><strong>02 / hybrid</strong>Mixed-material bracelet builds</span>
+        <span><strong>03 / category</strong>Every Hybrid model included</span>
       `;
     }
 
@@ -328,9 +328,9 @@
       principles = document.createElement("div");
       principles.className = "magnet-principles";
       principles.innerHTML = `
-        <span><strong>01 / FEATURE</strong><b>Visible magnetic inserts</b></span>
-        <span><strong>02 / BUILD</strong><b>Hybrid material construction</b></span>
-        <span><strong>03 / EDIT</strong><b>Only verified magnetic models</b></span>
+        <span><strong>01 / FEATURE</strong><b>Integrated magnetic construction</b></span>
+        <span><strong>02 / BUILD</strong><b>Hybrid material combinations</b></span>
+        <span><strong>03 / CATEGORY</strong><b>All Hybrid models are magnetic</b></span>
       `;
       const heading = section.querySelector(".ritual-section-heading");
       heading?.insertAdjacentElement("afterend", principles);
@@ -341,8 +341,8 @@
     if (braceletHeading) {
       const h3 = braceletHeading.querySelector("h3");
       const p = braceletHeading.querySelector("p");
-      if (h3) h3.textContent = "Hybrid Magnet Bracelets";
-      if (p) p.textContent = "These are the bracelet models where magnetic inserts are visibly part of the construction. Open a model to view the product, wholesale tiers and personalisation options.";
+      if (h3) h3.textContent = "Magnetic Hybrid Bracelets";
+      if (p) p.textContent = "Every bracelet in the Hybrid category is magnetic. Open any model below to view the product, wholesale tiers and personalisation options.";
     }
 
     // Put the magnetic bracelet edit first — before the research note and tools.
@@ -371,11 +371,11 @@
 
     target.innerHTML = items.map(product => `
       <button class="magnetic-bracelet-card" type="button" data-magnetic-product="${product.id}" aria-label="View ${product.name}">
-        <img src="${product.image}" alt="${product.name} hybrid magnet bracelet" loading="lazy">
+        <img src="${product.image}" alt="${product.name} magnetic hybrid bracelet" loading="lazy">
         <span class="magnet-card-copy">
-          <span class="magnet-card-badge">Hybrid Magnet</span>
+          <span class="magnet-card-badge">Magnetic Hybrid</span>
           <strong>${product.name}</strong>
-          <span class="magnet-card-meta">Magnetic inserts · ${product.series}</span>
+          <span class="magnet-card-meta">Magnetic construction · ${product.series}</span>
           <span class="magnet-card-price">RRP ${formatAED(pricing[product.id].retail)} · View product →</span>
         </span>
       </button>
@@ -407,7 +407,7 @@
         const visual = card.querySelector(".product-card-visual");
         const badge = document.createElement("span");
         badge.className = "catalogue-magnet-badge";
-        badge.textContent = "Hybrid Magnet";
+        badge.textContent = "Magnetic Hybrid";
         visual?.appendChild(badge);
       }
 
@@ -418,43 +418,25 @@
 
   function setupMagneticCatalogueFilter() {
     const filters = document.querySelector(".filters");
-    if (!filters || filters.querySelector("[data-magnetic-filter]")) return;
+    if (!filters) return;
 
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "magnetic-filter-button";
-    button.dataset.magneticFilter = "";
-    button.textContent = "Hybrid magnet";
-    filters.appendChild(button);
+    // Every Hybrid bracelet is magnetic, so the native Hybrid filter is the
+    // magnetic category. Relabel it instead of creating a misleading second filter.
+    const hybridButton = filters.querySelector('[data-filter="hybrid"]');
+    if (hybridButton) {
+      hybridButton.textContent = "Magnetic hybrid";
+      hybridButton.classList.add("magnetic-filter-button");
+    }
 
     const collectionGuide = document.querySelector("#collection .catalogue-update");
     if (collectionGuide && !document.querySelector(".magnetic-catalogue-jump")) {
       const jump = document.createElement("button");
       jump.type = "button";
       jump.className = "magnetic-catalogue-jump";
-      jump.innerHTML = '<strong>Looking for magnets?</strong><span>Show 3 Hybrid Magnet Bracelets →</span>';
+      jump.innerHTML = `<strong>Looking for magnets?</strong><span>Show ${magneticIds.length} Magnetic Hybrid Bracelets →</span>`;
       collectionGuide.insertAdjacentElement("afterend", jump);
-      jump.addEventListener("click", () => button.click());
+      jump.addEventListener("click", () => hybridButton?.click());
     }
-
-    button.addEventListener("click", () => {
-      document.querySelectorAll("[data-filter]").forEach(item => item.classList.remove("is-active"));
-      button.classList.add("is-active");
-      if (typeof renderProducts === "function") renderProducts("all");
-      requestAnimationFrame(() => {
-        document.querySelectorAll("[data-product-id]").forEach(productButton => {
-          const card = productButton.closest(".product-card");
-          if (card) card.hidden = !magneticSet.has(productButton.dataset.productId);
-        });
-        const count = document.querySelector("[data-product-count]");
-        if (count) count.textContent = String(magneticIds.length);
-        decorateCatalogueCards();
-      });
-    });
-
-    document.querySelectorAll("[data-filter]").forEach(normalFilter => {
-      normalFilter.addEventListener("click", () => button.classList.remove("is-active"));
-    });
   }
 
   function decorateDialog(productId = document.querySelector("[data-dialog]")?.dataset.productId) {
@@ -467,19 +449,20 @@
 
     const badge = document.createElement("span");
     badge.className = "magnet-dialog-badge";
-    badge.textContent = "Hybrid Magnet Bracelet";
+    badge.textContent = "Magnetic Hybrid Bracelet";
     meta.appendChild(badge);
 
     const description = document.querySelector("[data-dialog-description]");
     if (description) {
       const note = document.createElement("p");
       note.className = "magnet-dialog-note";
-      note.innerHTML = "<strong>Magnetic construction:</strong> this model includes visible magnetic inserts as part of its hybrid bracelet construction.";
+      note.innerHTML = "<strong>Magnetic construction:</strong> this Hybrid model is a Magnetic Hybrid Bracelet with magnetism integrated into its construction.";
       description.insertAdjacentElement("afterend", note);
     }
 
     const seriesLabel = document.querySelector("[data-dialog-series]");
-    if (seriesLabel) seriesLabel.textContent = "Hybrid Magnet Bracelet / Ion Balance";
+    const product = (typeof products !== "undefined") ? products.find(item => item.id === productId) : null;
+    if (seriesLabel) seriesLabel.textContent = `Magnetic Hybrid Bracelet / ${product?.series || "Hybrid"}`;
   }
 
   function bindMagneticShop() {
@@ -607,7 +590,7 @@
                 <p class="editorial-hero-deck">${slide.deck}</p>
                 <div class="editorial-hero-actions">
                   <a href="#collection">Browse bracelets →</a>
-                  <a href="#magnetic">Hybrid magnet edit →</a>
+                  <a href="#magnetic">Magnetic hybrid edit →</a>
                 </div>
               </div>
               <div class="editorial-hero-footer">
