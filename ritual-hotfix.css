@@ -1,0 +1,195 @@
+/* ==========================================================================
+   RITUAL — catalogue + hero hotfix
+   Drop this AFTER the site's existing stylesheet.
+   ========================================================================== */
+
+/* 1) Editorial titles may wrap naturally into tight display lines.
+   We are undoing any previous one-line/nowrap treatment without forcing every
+   title to break in the same place. */
+:is(.ritual-title, .section-title, .catalogue-title, .editorial-title, .hero-title,
+    .collection-title, .page-title, h1, h2).ritual-display-title,
+:is(.ritual-title, .section-title, .catalogue-title, .editorial-title,
+    .collection-title, .page-title) {
+  white-space: normal !important;
+  text-wrap: balance;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  line-height: .89 !important;
+  letter-spacing: -0.025em;
+  max-width: 13ch;
+}
+
+/* Don't accidentally constrain utility/card headings. */
+.product-card h2,
+.product-card h3,
+.catalogue-card h2,
+.catalogue-card h3,
+[data-product-card] h2,
+[data-product-card] h3 {
+  max-width: none;
+  white-space: normal !important;
+  line-height: 1.02 !important;
+  text-transform: none !important;
+}
+
+/* 2) Category selector — clear active state + clickable behaviour. */
+.ritual-category-selector,
+.category-selector,
+.catalogue-filter,
+.catalog-filter,
+[data-category-selector] {
+  position: relative;
+  z-index: 20;
+}
+
+.ritual-category-selector button,
+.category-selector button,
+.catalogue-filter button,
+.catalog-filter button,
+[data-category-selector] button,
+[data-category-selector] [role="button"] {
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  user-select: none;
+}
+
+.ritual-category-selector button.is-active,
+.category-selector button.is-active,
+.catalogue-filter button.is-active,
+.catalog-filter button.is-active,
+[data-category-selector] button.is-active,
+[data-category-selector] [role="button"].is-active {
+  background: #24251f !important;
+  color: #fffdf8 !important;
+  box-shadow: inset 0 -5px 0 #c7502f;
+}
+
+/* Hidden cards leave no layout gap. */
+.ritual-filter-hidden {
+  display: none !important;
+}
+
+/* 3) Catalogue cards — Magnetic Hybrid uses EXACTLY the same card language.
+   No special panel treatment, no all-caps title, no coloured image well. */
+:is(.product-card, .catalogue-card, .collection-card, [data-product-card]) {
+  background: transparent;
+}
+
+:is(.product-card, .catalogue-card, .collection-card, [data-product-card])
+:is(.product-image, .card-image, .image-wrap, .media, .product-media, figure) {
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+:is(.product-card, .catalogue-card, .collection-card, [data-product-card])
+:is(h2, h3, .product-title, .card-title, .product-name) {
+  text-transform: none !important;
+}
+
+/* When filtered, keep the catalogue grid clean and identical. */
+:is(.product-grid, .catalogue-grid, .collection-grid, [data-product-grid]) {
+  align-items: stretch;
+}
+
+/* Standalone Magnetic Hybrid editorial block is removed by JS.
+   This class prevents flash-of-content when JS marks it. */
+.ritual-remove-magnetic-section {
+  display: none !important;
+}
+
+/* 4) HOME HERO — arrows centered vertically at the physical banner edges. */
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider]) {
+  position: relative !important;
+  overflow: hidden;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-prev, .hero-next, .slider-prev, .slider-next, .carousel-prev, .carousel-next,
+    [data-prev], [data-next], [aria-label*="previous" i], [aria-label*="next" i]) {
+  position: absolute !important;
+  top: 50% !important;
+  bottom: auto !important;
+  transform: translateY(-50%) !important;
+  z-index: 30 !important;
+  margin: 0 !important;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-prev, .slider-prev, .carousel-prev, [data-prev], [aria-label*="previous" i]) {
+  left: 24px !important;
+  right: auto !important;
+}
+
+:is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+:is(.hero-next, .slider-next, .carousel-next, [data-next], [aria-label*="next" i]) {
+  right: 24px !important;
+  left: auto !important;
+}
+
+/* JS-applied hero states.  Subtle reveal: opacity + tiny scale/translate.
+   No aggressive zoom, no slide-whip. */
+.ritual-hero-slide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate3d(0, 8px, 0) scale(1.006);
+  transition:
+    opacity 620ms cubic-bezier(.22,.61,.36,1),
+    transform 760ms cubic-bezier(.22,.61,.36,1),
+    visibility 0s linear 760ms;
+  will-change: opacity, transform;
+}
+
+.ritual-hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition-delay: 0s;
+}
+
+/* If slides are layered by the existing site, preserve that.
+   JS only applies absolute positioning when it determines that layering is needed. */
+.ritual-hero-layered {
+  position: relative !important;
+}
+
+.ritual-hero-layered > .ritual-hero-slide {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.ritual-hero-layered > .ritual-hero-slide:first-of-type,
+.ritual-hero-layered > .ritual-hero-slide.is-active {
+  position: relative !important;
+}
+
+/* Touch/mobile: keep arrows on-banner but not crushed against edge. */
+@media (max-width: 767px) {
+  :is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+  :is(.hero-prev, .slider-prev, .carousel-prev, [data-prev], [aria-label*="previous" i]) {
+    left: 12px !important;
+  }
+
+  :is(.home-hero, .hero-slider, .hero-carousel, .ritual-hero, [data-hero-slider])
+  :is(.hero-next, .slider-next, .carousel-next, [data-next], [aria-label*="next" i]) {
+    right: 12px !important;
+  }
+
+  :is(.ritual-title, .section-title, .catalogue-title, .editorial-title,
+      .collection-title, .page-title) {
+    line-height: .92 !important;
+    max-width: 11.5ch;
+  }
+}
+
+/* Respect reduced-motion users while keeping the 3s carousel functional. */
+@media (prefers-reduced-motion: reduce) {
+  .ritual-hero-slide {
+    transition: opacity 140ms linear !important;
+    transform: none !important;
+  }
+}
