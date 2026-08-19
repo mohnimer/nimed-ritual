@@ -1,35 +1,26 @@
-# RITUAL HOTFIX V2
+# RITUAL — Magnetic Hybrid removal V3
 
-Replace the previous hotfix files with these two:
+This patch does ONE job first: remove the entire standalone Magnetic Hybrid editorial/showcase section shown in the screenshot.
 
-```html
-<link rel="stylesheet" href="/ritual-hotfix-v2.css">
-<script src="/ritual-hotfix-v2.js" defer></script>
-```
-
-## Critical correction in V2
-
-The entire standalone Magnetic Hybrid editorial/listing section is now hard-removed.
-
-The script specifically targets the unique block containing:
-
+It targets the unique visible content:
 - `04 / MAGNETIC RITUALS`
 - `Integrated magnetic construction`
 - `Hybrid material combinations`
 - `All Hybrid models are magnetic`
+- the duplicate standalone `Magnetic Hybrid Bracelets` showcase beneath it
 
-It removes that whole section from the DOM.
+It does **not** remove Magnetic Hybrid product cards from the master catalogue. Those stay available through the `MAGNETIC HYBRID` category selector.
 
-It also removes any leftover standalone `Magnetic Hybrid Bracelets` subsection underneath it.
+## Install
 
-**Magnetic Hybrid product cards in the main catalogue are NOT deleted.**
-They remain available only through the normal catalogue grid and the
-`MAGNETIC HYBRID` category selector.
+Copy `ritual-remove-magnetic-v3.js` into the public/root assets directory and add this immediately before `</body>`:
 
-Everything else from V1 remains:
-- category selector works
-- product titles are not forced ALL CAPS
-- standard catalogue image treatment
-- hero arrows vertically centered
-- hero rotates every 3 seconds
-- subtle reveal transition
+```html
+<script src="/ritual-remove-magnetic-v3.js"></script>
+```
+
+The script runs immediately, repeats after hydration, and watches for client-side re-renders so the section cannot reappear.
+
+## Important
+
+This is a runtime hard-delete because the actual current RITUAL site source ZIP/repository is not mounted in this chat session. A true source deletion requires the current site source file containing this markup; once that source is available, the whole block should be deleted there instead of patched at runtime.
