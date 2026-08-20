@@ -1,627 +1,192 @@
 (() => {
-  const magneticIds = (typeof products !== "undefined" ? products : [])
-    .filter(product => product.category === "hybrid")
-    .map(product => product.id);
-  const magneticSet = new Set(magneticIds);
+  "use strict";
 
-  const magneticProductCopy = Object.fromEntries(
-    magneticIds.map(id => [id, "Magnetic hybrid bracelet"])
-  );
+  const qs = (selector, scope = document) => scope.querySelector(selector);
+  const qsa = (selector, scope = document) => [...scope.querySelectorAll(selector)];
 
-  function injectMagnetStyles() {
-    if (document.getElementById("ritual-magnet-focus-styles")) return;
-    const style = document.createElement("style");
-    style.id = "ritual-magnet-focus-styles";
-    style.textContent = `
-      /* RITUAL / HYBRID MAGNET FOCUS — light theme, mobile-first */
-      .ritual-line-card.magnet-home-card {
-        position: relative;
-        background: #f8f1e8;
-      }
-      .ritual-line-card.magnet-home-card::before {
-        content: "";
-        position: absolute;
-        left: -1px;
-        right: -1px;
-        top: -1px;
-        height: 3px;
-        background: var(--rust);
-      }
-      .ritual-line-card.magnet-home-card strong { color: var(--rust); }
-
-      .magnetic-rituals.magnet-focus {
-        background: #f7f3eb;
-        border-top: 4px solid var(--rust);
-      }
-      .magnetic-rituals.magnet-focus .ritual-section-heading {
-        align-items: center;
-        margin-bottom: 30px;
-      }
-      .magnetic-rituals.magnet-focus .ritual-section-heading h2 {
-        max-width: 920px;
-        color: var(--ink);
-      }
-      .magnetic-rituals.magnet-focus .ritual-section-heading h2::after {
-        content: "MAGNETIC CONSTRUCTION / ALL HYBRID MODELS";
-        display: block;
-        margin-top: 18px;
-        font: 600 9px/1.2 var(--body);
-        letter-spacing: .16em;
-        color: var(--rust);
-      }
-
-      .magnet-principles {
-        max-width: 1480px;
-        margin: 0 auto 38px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        border: 1px solid var(--line);
-        background: #fbfaf6;
-      }
-      .magnet-principles span {
-        min-height: 82px;
-        padding: 18px 20px;
-        border-right: 1px solid var(--line);
-        display: grid;
-        align-content: center;
-        gap: 7px;
-      }
-      .magnet-principles span:last-child { border-right: 0; }
-      .magnet-principles strong {
-        font: 600 8px/1 var(--body);
-        letter-spacing: .15em;
-        color: var(--rust);
-      }
-      .magnet-principles b {
-        font: 400 24px/1 var(--heading);
-        color: var(--ink);
-      }
-
-      .magnetic-bracelet-heading {
-        max-width: 1480px;
-        margin: 0 auto 20px;
-        display: grid;
-        grid-template-columns: minmax(0, .8fr) minmax(320px, 1fr);
-        gap: 6vw;
-        align-items: end;
-      }
-      .magnetic-bracelet-heading h3 {
-        margin: 0;
-        font: 400 clamp(38px, 4.2vw, 66px)/.92 var(--heading);
-        letter-spacing: -.025em;
-      }
-      .magnetic-bracelet-heading p {
-        margin: 0;
-        max-width: 620px;
-        color: #5d584f;
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .magnetic-bracelet-grid {
-        max-width: 1480px;
-        margin: 0 auto 38px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-      }
-      .magnetic-bracelet-card {
-        position: relative;
-        min-width: 0;
-        padding: 0;
-        border: 1px solid var(--line);
-        background: #fbfaf6;
-        color: var(--ink);
-        text-align: left;
-        cursor: pointer;
-        overflow: hidden;
-      }
-      .magnetic-bracelet-card::before {
-        content: "";
-        position: absolute;
-        inset: 0 0 auto;
-        height: 3px;
-        background: var(--rust);
-        z-index: 2;
-      }
-      .magnetic-bracelet-card img {
-        display: block;
-        width: 100%;
-        aspect-ratio: 4 / 5;
-        object-fit: cover;
-        background: #f3efe6;
-      }
-      .magnetic-bracelet-card .magnet-card-copy {
-        display: grid;
-        gap: 8px;
-        padding: 17px 18px 19px;
-      }
-      .magnet-card-badge,
-      .catalogue-magnet-badge,
-      .magnet-dialog-badge {
-        width: fit-content;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 6px 8px 5px;
-        background: var(--rust);
-        color: #fff;
-        font: 600 8px/1 var(--body);
-        letter-spacing: .14em;
-        text-transform: uppercase;
-      }
-      .magnetic-bracelet-card strong {
-        font: 400 28px/1 var(--heading);
-      }
-      .magnetic-bracelet-card .magnet-card-meta {
-        color: #686158;
-        font-size: 11px;
-        line-height: 1.45;
-      }
-      .magnetic-bracelet-card .magnet-card-price {
-        margin-top: 4px;
-        font-size: 10px;
-        letter-spacing: .08em;
-        text-transform: uppercase;
-      }
-
-      .magnetic-note {
-        margin-top: 0;
-        margin-bottom: 48px;
-      }
-      .magnetic-note h3 { color: var(--ink); }
-      .research-areas strong { color: var(--rust); }
-
-      .magnetic-other-heading {
-        max-width: 1480px;
-        margin: 14px auto 20px;
-        padding-top: 34px;
-        border-top: 1px solid var(--line);
-        display: flex;
-        justify-content: space-between;
-        gap: 24px;
-        align-items: end;
-      }
-      .magnetic-other-heading h3 {
-        margin: 0;
-        font: 400 clamp(30px, 3.2vw, 48px)/1 var(--heading);
-      }
-      .magnetic-other-heading span {
-        font-size: 9px;
-        letter-spacing: .14em;
-        color: var(--rust);
-        text-transform: uppercase;
-      }
-
-      .product-card.is-magnetic-product .product-card-visual { position: relative; }
-      .catalogue-magnet-badge {
-        position: absolute;
-        left: 16px;
-        bottom: 16px;
-        z-index: 3;
-        box-shadow: 0 3px 14px rgba(60, 35, 20, .08);
-      }
-      .product-card.is-magnetic-product .product-card-info {
-        border-color: rgba(168, 73, 43, .48);
-      }
-      .product-card.is-magnetic-product .product-card-info > div > p:first-of-type {
-        color: var(--rust);
-      }
-
-      .magnet-dialog-badge { margin-top: 8px; }
-      .magnet-dialog-note {
-        margin: 12px 0 0;
-        padding: 12px 14px;
-        border: 1px solid rgba(168, 73, 43, .28);
-        background: #faf4ec;
-        color: #5f554c;
-        font-size: 11px;
-        line-height: 1.55;
-      }
-
-      .magnetic-filter-button { color: var(--rust) !important; }
-      .magnetic-filter-button.is-active {
-        background: var(--rust) !important;
-        color: #fff !important;
-        border-color: var(--rust) !important;
-      }
-      .magnetic-catalogue-jump {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin: 18px 0 26px;
-        padding: 15px 17px;
-        border: 1px solid rgba(168, 73, 43, .4);
-        background: #faf4ec;
-        color: var(--ink);
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .magnetic-catalogue-jump strong {
-        font: 400 20px/1 var(--heading);
-      }
-      .magnetic-catalogue-jump span {
-        font-size: 8px;
-        letter-spacing: .14em;
-        color: var(--rust);
-        text-transform: uppercase;
-      }
-
-      @media (max-width: 760px) {
-        .magnetic-rituals.magnet-focus { border-top-width: 3px; }
-        .magnetic-rituals.magnet-focus .ritual-section-heading h2::after {
-          margin-top: 14px;
-          font-size: 8px;
-        }
-        .magnet-principles { grid-template-columns: 1fr; }
-        .magnet-principles span {
-          min-height: 0;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-        }
-        .magnet-principles span:last-child { border-bottom: 0; }
-        .magnet-principles b { font-size: 21px; }
-        .magnetic-bracelet-heading { grid-template-columns: 1fr; gap: 14px; }
-        .magnetic-bracelet-grid { grid-template-columns: 1fr; gap: 12px; }
-        .magnetic-bracelet-card img { aspect-ratio: 1.1 / 1; object-position: center 42%; }
-        .magnetic-other-heading { align-items: start; flex-direction: column; gap: 8px; }
-        .catalogue-magnet-badge { left: 12px; bottom: 12px; }
-        .magnetic-catalogue-jump { align-items: flex-start; flex-direction: column; }
-      }
-
-      @media (max-width: 430px) {
-        .magnetic-bracelet-card strong { font-size: 25px; }
-        .magnet-card-badge, .catalogue-magnet-badge, .magnet-dialog-badge { font-size: 7px; }
-      }
-    `;
-    document.head.appendChild(style);
+  function loadCleanStyles() {
+    if (document.querySelector('link[href="homepage-clean.css"]')) return;
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "homepage-clean.css";
+    document.head.appendChild(link);
   }
 
-  function relabelMagneticExperience() {
-    const homeCard = document.querySelector('.ritual-line-card[href="#magnetic"]');
-    if (homeCard) {
-      homeCard.classList.add("magnet-home-card");
-      const label = homeCard.querySelector("span");
-      const title = homeCard.querySelector("strong");
-      const action = homeCard.querySelector("b");
-      if (label) label.textContent = "02 / MAGNETIC RITUALS";
-      if (title) title.textContent = "MAGNETIC HYBRID BRACELETS";
-      if (action) action.textContent = "Magnets + tools →";
-    }
+  function applyMeridianFix() {
+    if (typeof products === "undefined") return;
+    const meridian = products.find(product => product.id === "meridian-link");
+    if (!meridian) return;
 
-    const desktopNav = document.querySelector('.desktop-nav a[href="#magnetic"]');
-    if (desktopNav) desktopNav.textContent = "Magnetic Hybrid";
+    meridian.image = "assets/meridian-link-cutout.png";
+    meridian.secondary = "assets/catalogue-transparent/meridian-link-v2.webp";
+    meridian.lifestyle = "assets/catalogue-angle-transparent/meridian-link-v2.webp";
+    delete meridian.lifestyleFemale;
 
-    const mobileNav = document.querySelector('.mobile-menu a[href="#magnetic"]');
-    if (mobileNav) mobileNav.innerHTML = '<span>03</span> Magnetic Hybrid Bracelets';
+    const existingCardImage = qs('[data-product-id="meridian-link"] .product-card-visual img');
+    if (existingCardImage) existingCardImage.src = meridian.image;
+  }
 
-    const section = document.querySelector("#magnetic");
-    if (!section) return;
-    section.classList.add("magnet-focus");
+  function simplifyHeader() {
+    qs(".header-line")?.remove();
 
-    const sectionIndex = section.querySelector(".ritual-section-heading .section-index");
-    const title = section.querySelector("#magnetic-title");
-    const intro = section.querySelector(".ritual-section-heading > p");
-    if (sectionIndex) sectionIndex.textContent = "04 / Magnetic Rituals";
-    if (title) title.innerHTML = "Magnetic Hybrid<br>Bracelets";
-    if (intro) intro.textContent = "Every bracelet in the Hybrid category is a Magnetic Hybrid Bracelet — combining mixed materials with integrated magnetic construction, alongside a small edit of magnetic tools and objects.";
-
-    const note = section.querySelector(".magnetic-note");
-    if (note) {
-      const noteIndex = note.querySelector(".section-index");
-      const noteTitle = note.querySelector("h3");
-      const noteText = note.querySelector("p:not(.section-index)");
-      if (noteIndex) noteIndex.textContent = "Magnetic construction";
-      if (noteTitle) noteTitle.textContent = "Magnetism, built in.";
-      if (noteText) noteText.textContent = "Across the entire Hybrid bracelet category, magnetism is part of the construction and product story. RITUAL presents it as a distinctive material feature and tactile novelty — not as medical treatment.";
-      const areas = note.querySelector(".research-areas");
-      if (areas) areas.innerHTML = `
-        <span><strong>01 / magnetic</strong>Integrated magnetic construction</span>
-        <span><strong>02 / hybrid</strong>Mixed-material bracelet builds</span>
-        <span><strong>03 / category</strong>Every Hybrid model included</span>
+    const desktopNav = qs(".desktop-nav");
+    if (desktopNav) {
+      desktopNav.innerHTML = `
+        <a href="#collection">Bracelets</a>
+        <a href="#other-rituals">Other rituals</a>
       `;
     }
 
-    let principles = section.querySelector(".magnet-principles");
-    if (!principles) {
-      principles = document.createElement("div");
-      principles.className = "magnet-principles";
-      principles.innerHTML = `
-        <span><strong>01 / FEATURE</strong><b>Integrated magnetic construction</b></span>
-        <span><strong>02 / BUILD</strong><b>Hybrid material combinations</b></span>
-        <span><strong>03 / CATEGORY</strong><b>All Hybrid models are magnetic</b></span>
+    const mobileNav = qs(".mobile-menu nav");
+    if (mobileNav) {
+      mobileNav.innerHTML = `
+        <a href="#collection">Bracelets</a>
+        <a href="#other-rituals">Other rituals</a>
+        <button data-quote-open type="button">Wholesale cart <strong data-quote-count>0</strong></button>
       `;
-      const heading = section.querySelector(".ritual-section-heading");
-      heading?.insertAdjacentElement("afterend", principles);
     }
 
-    const braceletHeading = section.querySelector(".magnetic-bracelet-heading");
-    const braceletGrid = section.querySelector(".magnetic-bracelet-grid");
-    if (braceletHeading) {
-      const h3 = braceletHeading.querySelector("h3");
-      const p = braceletHeading.querySelector("p");
-      if (h3) h3.textContent = "Magnetic Hybrid Bracelets";
-      if (p) p.textContent = "Every bracelet in the Hybrid category is magnetic. Open any model below to view the product, wholesale tiers and personalisation options.";
-    }
+    const mobileFooter = qs(".mobile-menu > p");
+    if (mobileFooter) mobileFooter.innerHTML = "Ritual by Nimed";
 
-    // Put the magnetic bracelet edit first — before the research note and tools.
-    const firstContent = note || section.querySelector(".magnetic-feature-grid");
-    if (firstContent && braceletHeading && braceletGrid) {
-      section.insertBefore(braceletHeading, firstContent);
-      section.insertBefore(braceletGrid, firstContent);
-    }
-
-    const featureGrid = section.querySelector(".magnetic-feature-grid");
-    if (featureGrid && !section.querySelector(".magnetic-other-heading")) {
-      const otherHeading = document.createElement("div");
-      otherHeading.className = "magnetic-other-heading";
-      otherHeading.innerHTML = '<h3>Other Magnetic Rituals</h3><span>Face tool / Magnetic spheres</span>';
-      featureGrid.insertAdjacentElement("beforebegin", otherHeading);
-    }
-  }
-
-  function renderMagneticBracelets() {
-    const target = document.querySelector("[data-magnetic-bracelets]");
-    if (!target || typeof products === "undefined") return;
-
-    const items = magneticIds
-      .map(id => products.find(product => product.id === id))
-      .filter(Boolean);
-
-    target.innerHTML = items.map(product => `
-      <button class="magnetic-bracelet-card" type="button" data-magnetic-product="${product.id}" aria-label="View ${product.name}">
-        <img src="${product.image}" alt="${product.name} magnetic hybrid bracelet" loading="lazy">
-        <span class="magnet-card-copy">
-          <span class="magnet-card-badge">Magnetic Hybrid</span>
-          <strong>${product.name}</strong>
-          <span class="magnet-card-meta">Magnetic construction · ${product.series}</span>
-          <span class="magnet-card-price">RRP ${formatAED(pricing[product.id].retail)} · View product →</span>
-        </span>
-      </button>
-    `).join("");
-
-    target.querySelectorAll("[data-magnetic-product]").forEach(button => {
-      button.addEventListener("click", () => {
-        openProduct(button.dataset.magneticProduct);
-        decorateDialog(button.dataset.magneticProduct);
-      });
+    // Re-bind the new mobile wholesale-cart button because the original was replaced.
+    qs('[data-quote-open]', mobileNav)?.addEventListener("click", () => {
+      qs("[data-quote-dialog]")?.showModal();
+      document.body.classList.add("quote-open");
+      if (typeof renderQuote === "function") renderQuote();
     });
   }
 
-  function decorateCatalogueCards() {
-    document.querySelectorAll("[data-product-id]").forEach(button => {
-      const id = button.dataset.productId;
-      const card = button.closest(".product-card");
-      if (!card) return;
+  function setupSmartHeader() {
+    const header = qs("[data-header]");
+    if (!header) return;
 
-      const existing = card.querySelector(".catalogue-magnet-badge");
-      if (!magneticSet.has(id)) {
-        card.classList.remove("is-magnetic-product");
-        existing?.remove();
-        return;
+    let lastY = Math.max(0, window.scrollY);
+    let ticking = false;
+
+    const update = () => {
+      const y = Math.max(0, window.scrollY);
+      const delta = y - lastY;
+      const locked = document.body.classList.contains("menu-open") ||
+        document.body.classList.contains("dialog-open") ||
+        document.body.classList.contains("quote-open");
+
+      if (locked || y < 30) {
+        header.classList.remove("is-hidden");
+      } else if (delta > 9) {
+        header.classList.add("is-hidden");
+      } else if (delta < -6) {
+        header.classList.remove("is-hidden");
       }
 
-      card.classList.add("is-magnetic-product");
-      if (!existing) {
-        const visual = card.querySelector(".product-card-visual");
-        const badge = document.createElement("span");
-        badge.className = "catalogue-magnet-badge";
-        badge.textContent = "Magnetic Hybrid";
-        visual?.appendChild(badge);
-      }
+      lastY = y;
+      ticking = false;
+    };
 
-      const seriesLabel = card.querySelector(".product-card-info p");
-      if (seriesLabel) seriesLabel.textContent = magneticProductCopy[id];
-    });
+    window.addEventListener("scroll", () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    }, { passive: true });
   }
 
-  function setupMagneticCatalogueFilter() {
-    const filters = document.querySelector(".filters");
-    if (!filters) return;
-
-    // Every Hybrid bracelet is magnetic, so the native Hybrid filter is the
-    // magnetic category. Relabel it instead of creating a misleading second filter.
-    const hybridButton = filters.querySelector('[data-filter="hybrid"]');
-    if (hybridButton) {
-      hybridButton.textContent = "Magnetic hybrid";
-      hybridButton.classList.add("magnetic-filter-button");
-    }
-
-    const collectionGuide = document.querySelector("#collection .catalogue-update");
-    if (collectionGuide && !document.querySelector(".magnetic-catalogue-jump")) {
-      const jump = document.createElement("button");
-      jump.type = "button";
-      jump.className = "magnetic-catalogue-jump";
-      jump.innerHTML = `<strong>Looking for magnets?</strong><span>Show ${magneticIds.length} Magnetic Hybrid Bracelets →</span>`;
-      collectionGuide.insertAdjacentElement("afterend", jump);
-      jump.addEventListener("click", () => hybridButton?.click());
-    }
-  }
-
-  function decorateDialog(productId = document.querySelector("[data-dialog]")?.dataset.productId) {
-    const meta = document.querySelector(".dialog-product-meta");
-    if (!meta) return;
-    meta.querySelector(".magnet-dialog-badge")?.remove();
-    document.querySelector(".magnet-dialog-note")?.remove();
-
-    if (!magneticSet.has(productId)) return;
-
-    const badge = document.createElement("span");
-    badge.className = "magnet-dialog-badge";
-    badge.textContent = "Magnetic Hybrid Bracelet";
-    meta.appendChild(badge);
-
-    const description = document.querySelector("[data-dialog-description]");
-    if (description) {
-      const note = document.createElement("p");
-      note.className = "magnet-dialog-note";
-      note.innerHTML = "<strong>Magnetic construction:</strong> this Hybrid model is a Magnetic Hybrid Bracelet with magnetism integrated into its construction.";
-      description.insertAdjacentElement("afterend", note);
-    }
-
-    const seriesLabel = document.querySelector("[data-dialog-series]");
-    const product = (typeof products !== "undefined") ? products.find(item => item.id === productId) : null;
-    if (seriesLabel) seriesLabel.textContent = `Magnetic Hybrid Bracelet / ${product?.series || "Hybrid"}`;
-  }
-
-  function bindMagneticShop() {
-    document.querySelectorAll("[data-magnetic-add]").forEach(button => {
-      button.addEventListener("click", () => {
-        const id = button.dataset.magneticAdd;
-        const input = document.querySelector(`[data-magnetic-qty="${id}"]`);
-        const quantity = normaliseQuantity(input?.value, id);
-        if (input) input.value = quantity;
-        addToQuote(id, quantity);
-
-        const original = button.textContent;
-        button.textContent = "Added to wholesale cart";
-        window.setTimeout(() => { button.textContent = original; }, 1400);
-      });
-    });
-
-    document.querySelectorAll("[data-magnetic-qty]").forEach(input => {
-      input.addEventListener("change", () => {
-        input.value = normaliseQuantity(input.value, input.dataset.magneticQty);
-      });
-    });
-  }
-
-
-
-  /* ----------------------------------------------------------
-     RITUAL / IN USE — 70s magazine-inspired hero slideshow
-     Photography is supplied by RITUAL; no generated imagery.
-     ---------------------------------------------------------- */
   function installEditorialHero() {
-    if (document.querySelector(".editorial-hero")) return;
+    if (qs(".editorial-hero")) return;
 
-    if (!document.querySelector('link[href="hero-editorial.css"]')) {
-      const css = document.createElement("link");
-      css.rel = "stylesheet";
-      css.href = "hero-editorial.css";
-      document.head.appendChild(css);
-    }
-
-    const chooser = document.getElementById("top");
-    if (!chooser) return;
-    chooser.id = "ritual-chooser";
+    const main = qs("main");
+    if (!main) return;
 
     const slides = [
       {
         image: "assets/hero-archive/01-daily-edit.jpeg",
         pos: "54% 54%",
-        overline: "RITUAL / THE DAILY EDIT",
+        label: "The daily edit",
         title: "Worn into <em>life.</em>",
-        deck: "Bracelets made to leave the product shot and enter the everyday — hands, records, cameras, roads and routines.",
-        caption: "IN USE / ISSUE 01 / DAILY OBJECTS"
+        deck: "Everyday objects, worn properly."
       },
       {
         image: "assets/hero-archive/02-silver-edit.jpeg",
         pos: "51% 48%",
-        overline: "RITUAL / THE SILVER EDIT",
+        label: "The silver edit",
         title: "Quiet. <em>Not invisible.</em>",
-        deck: "Clean stainless steel, soft light and the kind of styling that feels found rather than staged.",
-        caption: "IN USE / ISSUE 02 / SILVER"
+        deck: "Steel, softened by warm light."
       },
       {
         image: "assets/hero-archive/03-archive-edit.jpeg",
         pos: "56% 52%",
-        overline: "RITUAL / THE ARCHIVE EDIT",
+        label: "The archive edit",
         title: "Back in <em>circulation.</em>",
-        deck: "A bracelet beside old sleeves, paper, timber and warm afternoon light — more archive than advertisement.",
-        caption: "IN USE / ISSUE 03 / ARCHIVE"
+        deck: "Built to live beyond the product shot."
       },
       {
         image: "assets/hero-archive/04-club-edit.jpeg",
         pos: "58% 49%",
-        overline: "RITUAL / THE CLUB EDIT",
+        label: "The club edit",
         title: "Colour with <em>history.</em>",
-        deck: "Club identity treated like vintage leisurewear: easy, nostalgic and built to live beyond match day.",
-        caption: "IN USE / ISSUE 04 / CLUB COLOUR"
+        deck: "Club colour, off the pitch."
       },
       {
         image: "assets/hero-archive/05-leisure-edit.jpeg",
         pos: "49% 52%",
-        overline: "RITUAL / THE LEISURE EDIT",
+        label: "The leisure edit",
         title: "Match day. <em>Off duty.</em>",
-        deck: "A softer side of supporter culture — sun-faded colour, paperback pages and an everyday wrist.",
-        caption: "IN USE / ISSUE 05 / LEISURE"
+        deck: "Supporter culture, off duty."
       },
       {
         image: "assets/hero-archive/06-personal-edit.jpeg",
         pos: "49% 49%",
-        overline: "RITUAL / THE PERSONAL EDIT",
+        label: "The personal edit",
         title: "Make it <em>yours.</em>",
-        deck: "Personalisation belongs in the object, not on top of it. Engraving, Medical ID and QR options are built into the catalogue flow.",
-        caption: "IN USE / ISSUE 06 / PERSONAL"
+        deck: "Engraving makes the object personal."
       },
       {
         image: "assets/hero-archive/07-road-edit.jpeg",
         pos: "51% 49%",
-        overline: "RITUAL / THE ROAD EDIT",
+        label: "The road edit",
         title: "Sound. Sun. <em>Steel.</em>",
-        deck: "The collection photographed the way it should feel: tactile, warm, slightly imperfect and already part of a story.",
-        caption: "IN USE / ISSUE 07 / ROAD"
+        deck: "Made for roads, records and routines."
       }
     ];
 
     const hero = document.createElement("section");
     hero.className = "editorial-hero is-running";
     hero.id = "top";
-    hero.setAttribute("aria-label", "RITUAL in-use editorial slideshow");
-
+    hero.setAttribute("aria-label", "Ritual in-use slideshow");
     hero.innerHTML = `
       <div class="editorial-hero-masthead" aria-hidden="true">
-        <strong>RITUAL</strong>
-        <span>In use / archive 71</span>
+        <strong>Ritual</strong>
+        <span>In use / 71</span>
       </div>
       <div class="editorial-hero-track">
         ${slides.map((slide, index) => `
           <article class="editorial-hero-slide${index === 0 ? " is-active" : ""}" data-editorial-slide="${index}" aria-hidden="${index === 0 ? "false" : "true"}">
             <div class="editorial-hero-media" style="--hero-pos:${slide.pos}">
-              <img src="${slide.image}" alt="RITUAL bracelet photographed in a warm archival-inspired everyday setting" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
+              <img src="${slide.image}" alt="Ritual bracelet worn in an archival-inspired everyday setting" ${index === 0 ? 'fetchpriority="high"' : 'loading="lazy"'}>
             </div>
             <div class="editorial-hero-copy">
-              <div class="editorial-hero-kicker"><span>NIMED / RITUAL / DUBAI</span><span>VOL. 71</span></div>
-              <div class="editorial-hero-title-wrap">
-                <p class="editorial-hero-overline">${slide.overline}</p>
-                <h1 class="editorial-hero-title">${slide.title}</h1>
-                <p class="editorial-hero-deck">${slide.deck}</p>
-                <div class="editorial-hero-actions">
-                  <a href="#collection">Browse bracelets →</a>
-                  <a href="#magnetic">Magnetic hybrid edit →</a>
-                </div>
-              </div>
-              <div class="editorial-hero-footer">
-                <span class="editorial-hero-caption">${slide.caption}<br>WHOLESALE CATALOGUE / 2026</span>
-                <span class="editorial-hero-issue">New</span>
-              </div>
+              <p class="editorial-hero-overline">${slide.label}</p>
+              <h1 class="editorial-hero-title">${slide.title}</h1>
+              <p class="editorial-hero-deck">${slide.deck}</p>
+              <a class="editorial-hero-action" href="#collection">Browse bracelets <span>→</span></a>
             </div>
           </article>
         `).join("")}
       </div>
       <div class="editorial-hero-controls" aria-label="Slideshow controls">
-        <div class="editorial-hero-arrows">
-          <button type="button" data-editorial-prev aria-label="Previous slide">←</button>
-          <button type="button" data-editorial-next aria-label="Next slide">→</button>
-        </div>
+        <button type="button" data-editorial-prev aria-label="Previous slide">←</button>
         <div class="editorial-hero-progress" aria-hidden="true"><span></span></div>
-        <div class="editorial-hero-count" aria-live="polite"><span data-editorial-current>01</span> / 07</div>
-      </div>
-      <div class="editorial-hero-dots" aria-label="Choose slideshow image">
-        ${slides.map((_, index) => `<button type="button" data-editorial-dot="${index}" aria-label="Go to slide ${index + 1}" aria-current="${index === 0 ? "true" : "false"}"></button>`).join("")}
+        <span class="editorial-hero-count" aria-live="polite"><b data-editorial-current>01</b> / 07</span>
+        <button type="button" data-editorial-next aria-label="Next slide">→</button>
       </div>
     `;
 
-    chooser.parentNode.insertBefore(hero, chooser);
+    main.prepend(hero);
 
-    const slideEls = [...hero.querySelectorAll("[data-editorial-slide]")];
-    const dots = [...hero.querySelectorAll("[data-editorial-dot]")];
-    const counter = hero.querySelector("[data-editorial-current]");
+    const slideEls = qsa("[data-editorial-slide]", hero);
+    const counter = qs("[data-editorial-current]", hero);
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let current = 0;
-    let timer = null;
+    let timer = 0;
     let pointerStart = null;
 
     const restartProgress = () => {
@@ -630,75 +195,186 @@
       if (!reducedMotion) hero.classList.add("is-running");
     };
 
-    const show = (next, userInitiated = false) => {
+    const schedule = () => {
+      window.clearInterval(timer);
+      if (reducedMotion || document.hidden) return;
+      timer = window.setInterval(() => show(current + 1), 6500);
+    };
+
+    const show = next => {
       current = (next + slides.length) % slides.length;
       slideEls.forEach((slide, index) => {
         const active = index === current;
         slide.classList.toggle("is-active", active);
         slide.setAttribute("aria-hidden", String(!active));
       });
-      dots.forEach((dot, index) => dot.setAttribute("aria-current", String(index === current)));
       if (counter) counter.textContent = String(current + 1).padStart(2, "0");
       restartProgress();
-      if (userInitiated) schedule();
     };
 
-    const schedule = () => {
-      window.clearInterval(timer);
-      if (reducedMotion || document.hidden) return;
-      timer = window.setInterval(() => show(current + 1, false), 6500);
-    };
-
-    hero.querySelector("[data-editorial-prev]")?.addEventListener("click", () => show(current - 1, true));
-    hero.querySelector("[data-editorial-next]")?.addEventListener("click", () => show(current + 1, true));
-    dots.forEach(dot => dot.addEventListener("click", () => show(Number(dot.dataset.editorialDot), true)));
-
-    hero.addEventListener("mouseenter", () => window.clearInterval(timer));
-    hero.addEventListener("mouseleave", schedule);
-    hero.addEventListener("focusin", () => window.clearInterval(timer));
-    hero.addEventListener("focusout", event => {
-      if (!hero.contains(event.relatedTarget)) schedule();
-    });
-
-    hero.addEventListener("keydown", event => {
-      if (event.key === "ArrowLeft") show(current - 1, true);
-      if (event.key === "ArrowRight") show(current + 1, true);
-    });
+    qs("[data-editorial-prev]", hero)?.addEventListener("click", () => { show(current - 1); schedule(); });
+    qs("[data-editorial-next]", hero)?.addEventListener("click", () => { show(current + 1); schedule(); });
 
     hero.addEventListener("pointerdown", event => {
       if (event.pointerType === "mouse") return;
       pointerStart = { x: event.clientX, y: event.clientY };
     }, { passive: true });
+
     hero.addEventListener("pointerup", event => {
       if (!pointerStart || event.pointerType === "mouse") return;
       const dx = event.clientX - pointerStart.x;
       const dy = event.clientY - pointerStart.y;
       pointerStart = null;
-      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.25) show(current + (dx < 0 ? 1 : -1), true);
+      if (Math.abs(dx) > 44 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        show(current + (dx < 0 ? 1 : -1));
+        schedule();
+      }
     }, { passive: true });
 
     document.addEventListener("visibilitychange", schedule);
     schedule();
   }
 
-  installEditorialHero();
-  injectMagnetStyles();
-  relabelMagneticExperience();
-  renderMagneticBracelets();
-  bindMagneticShop();
-  decorateCatalogueCards();
-  setupMagneticCatalogueFilter();
+  function simplifyCatalogue() {
+    qs(".ritual-home")?.remove();
+    qs("#bracelets.hero")?.remove();
 
-  const productGrid = document.querySelector("[data-product-grid]");
-  if (productGrid) {
-    new MutationObserver(() => decorateCatalogueCards()).observe(productGrid, { childList: true, subtree: true });
-  }
+    const collection = qs("#collection");
+    if (!collection) return;
 
-  const dialog = document.querySelector("[data-dialog]");
-  if (dialog) {
-    new MutationObserver(() => decorateDialog(dialog.dataset.productId)).observe(dialog, {
-      attributes: true,
-      attributeFilter: ["data-product-id"]
+    const heading = qs(".collection-heading", collection);
+    if (heading) {
+      heading.classList.add("collection-heading-clean");
+      heading.innerHTML = `
+        <div>
+          <h2 id="collection-title">Bracelets</h2>
+          <p class="bracelet-material-note">Stainless steel, woven, silicone and mixed-material builds. Hybrid models include magnetic construction; magnets have been studied for pain and circulation, but evidence remains mixed.</p>
+        </div>
+      `;
+    }
+
+    qs(".catalogue-update", collection)?.remove();
+
+    const filterLabels = {
+      all: "All",
+      steel: "Stainless steel",
+      hybrid: "Hybrid",
+      woven: "Woven",
+      silicon: "Silicone"
+    };
+    qsa("[data-filter]", collection).forEach(button => {
+      if (filterLabels[button.dataset.filter]) button.textContent = filterLabels[button.dataset.filter];
     });
   }
+
+  function simplifyEngraving() {
+    const section = qs("#engraving");
+    if (!section) return;
+    qs(".section-index", section)?.remove();
+    const title = qs("h2", section);
+    if (title) title.textContent = "Custom engraving";
+    qs(".engraving-kicker", section)?.remove();
+    qs(".engraving-note", section)?.remove();
+    qs(".arrow-link", section)?.remove();
+    const body = qs(".engraving-body", section);
+    if (body) body.textContent = "Names, dates, initials, Medical ID or a short message.";
+  }
+
+  function buildOtherRituals() {
+    qs("#magnetic")?.remove();
+    qs("#breathing")?.remove();
+
+    const main = qs("main");
+    const engraving = qs("#engraving");
+    if (!main || qs("#other-rituals")) return;
+
+    const section = document.createElement("section");
+    section.id = "other-rituals";
+    section.className = "other-rituals";
+    section.innerHTML = `
+      <div class="other-rituals-heading">
+        <h2>Other rituals</h2>
+      </div>
+      <div class="other-rituals-grid">
+        <article class="other-ritual-card">
+          <div class="other-ritual-media"><img src="assets/ritual-expansion/magnetic-face-tool.webp" alt="Face Ritual Tool" loading="lazy"></div>
+          <div class="other-ritual-copy">
+            <h3>Face Ritual Tool</h3>
+            <p>Stainless-steel rolling and gua-sha-style facial massage tool.</p>
+            <div class="other-ritual-bottom">
+              <span>AED 200</span>
+              <label>Qty <input data-other-qty="face-ritual-tool" type="number" min="10" max="30" value="10" inputmode="numeric"></label>
+              <button type="button" data-other-add="face-ritual-tool">Add to wholesale cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="other-ritual-card">
+          <div class="other-ritual-media"><img src="assets/ritual-expansion/magnetic-spheres-100.webp" alt="100 Magnetic Spheres" loading="lazy"></div>
+          <div class="other-ritual-copy">
+            <h3>100 Magnetic Spheres</h3>
+            <p>A 100-piece magnetic construction set for adult tactile play.</p>
+            <div class="other-ritual-bottom">
+              <span>AED 150</span>
+              <label>Qty <input data-other-qty="magnetic-spheres-100" type="number" min="10" value="10" inputmode="numeric"></label>
+              <button type="button" data-other-add="magnetic-spheres-100">Add to wholesale cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="other-ritual-card">
+          <div class="other-ritual-media"><img src="assets/ritual-expansion/breathe-easy-packaging.png" alt="Breathe Easy reusable nasal dilators" loading="lazy"></div>
+          <div class="other-ritual-copy">
+            <h3>Breathe Easy</h3>
+            <p>Reusable nasal dilators for a simple, drug-free breathing routine.</p>
+            <div class="other-ritual-bottom single-action">
+              <a href="mailto:info@pharmaservice.ae?subject=Ritual%20Breathe%20Easy%20wholesale%20enquiry">Wholesale enquiry <span>→</span></a>
+            </div>
+          </div>
+        </article>
+      </div>
+    `;
+
+    if (engraving?.nextSibling) engraving.parentNode.insertBefore(section, engraving.nextSibling);
+    else main.appendChild(section);
+  }
+
+  function bindOtherRituals() {
+    qsa("[data-other-add]").forEach(button => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.otherAdd;
+        const input = qs(`[data-other-qty="${id}"]`);
+        if (!input || typeof addToQuote !== "function") return;
+
+        const quantity = typeof normaliseQuantity === "function"
+          ? normaliseQuantity(input.value, id)
+          : Math.max(Number(input.min) || 1, Math.round(Number(input.value) || 1));
+
+        input.value = quantity;
+        addToQuote(id, quantity);
+        const original = button.textContent;
+        button.textContent = "Added";
+        window.setTimeout(() => { button.textContent = original; }, 1100);
+      });
+    });
+  }
+
+  function softenRemainingText() {
+    const footerBrand = qs(".footer-wordmark");
+    if (footerBrand) footerBrand.textContent = "Ritual";
+
+    qsa(".header-quote").forEach(button => {
+      const count = qs("[data-quote-count]", button)?.textContent || "0";
+      button.innerHTML = `Wholesale cart <span data-quote-count>${count}</span>`;
+    });
+  }
+
+  loadCleanStyles();
+  applyMeridianFix();
+  simplifyHeader();
+  installEditorialHero();
+  simplifyCatalogue();
+  simplifyEngraving();
+  buildOtherRituals();
+  bindOtherRituals();
+  softenRemainingText();
+  setupSmartHeader();
 })();

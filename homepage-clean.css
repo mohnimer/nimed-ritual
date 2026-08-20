@@ -1,0 +1,372 @@
+/* Ritual homepage clean rebuild — quiet typography, fewer sections, no forced caps */
+
+.site-header {
+  grid-template-columns: 180px 1fr auto auto;
+  transition: transform .28s cubic-bezier(.2,.75,.2,1), height .3s var(--ease), background .3s;
+  will-change: transform;
+}
+.site-header.is-hidden { transform: translateY(calc(-100% - 8px)); }
+.site-header .desktop-nav { justify-self: end; }
+
+.site-header,
+.site-header *,
+.mobile-menu,
+.mobile-menu *,
+main,
+main *,
+footer,
+footer *,
+.product-dialog,
+.product-dialog *,
+.quote-dialog,
+.quote-dialog * {
+  text-transform: none !important;
+}
+
+.desktop-nav,
+.header-quote,
+.mobile-menu nav a,
+.mobile-menu nav button {
+  letter-spacing: .04em;
+}
+
+/* Editorial hero — magazine character without shouting */
+.editorial-hero {
+  --hero-paper: #f7f3ea;
+  --hero-ink: #24221d;
+  --hero-rust: #b65131;
+  position: relative;
+  height: min(78vh, 820px);
+  min-height: 660px;
+  margin-top: 72px;
+  overflow: hidden;
+  color: var(--hero-ink);
+  background: var(--hero-paper);
+  border-bottom: 1px solid var(--line);
+}
+.editorial-hero-track,
+.editorial-hero-slide { position: absolute; inset: 0; }
+.editorial-hero-slide {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, .58fr);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s ease, visibility 0s linear .5s;
+}
+.editorial-hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  transition-delay: 0s;
+}
+.editorial-hero-media { min-width: 0; overflow: hidden; background: #d9cdb9; }
+.editorial-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--hero-pos, 50% 50%);
+  transform: scale(1.01);
+  transition: transform 7s linear;
+}
+.editorial-hero-slide.is-active .editorial-hero-media img { transform: scale(1.045); }
+.editorial-hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8vw 4vw 7vw;
+  border-left: 1px solid rgba(36,34,29,.15);
+  background: #fbfaf6;
+}
+.editorial-hero-overline {
+  margin: 0 0 18px;
+  color: var(--hero-rust);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .055em;
+}
+.editorial-hero-title {
+  max-width: 500px;
+  margin: 0;
+  font: 400 clamp(44px, 4.5vw, 72px)/1.02 var(--heading);
+  letter-spacing: -.025em;
+}
+.editorial-hero-title em { color: var(--hero-rust); font-style: italic; }
+.editorial-hero-deck {
+  max-width: 360px;
+  margin: 22px 0 0;
+  color: #565047;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.editorial-hero-action {
+  display: inline-flex;
+  width: fit-content;
+  gap: 24px;
+  margin-top: 28px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid currentColor;
+  font-size: 12px;
+}
+.editorial-hero-masthead {
+  position: absolute;
+  z-index: 5;
+  top: 26px;
+  left: 3.2vw;
+  color: #fff8e9;
+  pointer-events: none;
+  text-shadow: 0 2px 15px rgba(0,0,0,.18);
+}
+.editorial-hero-masthead strong {
+  display: block;
+  font: 400 clamp(62px, 7vw, 108px)/.9 var(--heading);
+  letter-spacing: -.04em;
+}
+.editorial-hero-masthead span {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 8px;
+  border: 1px solid rgba(255,248,233,.7);
+  border-radius: 999px;
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+.editorial-hero-controls {
+  position: absolute;
+  z-index: 8;
+  left: 3.2vw;
+  right: calc(28% + 28px);
+  bottom: 26px;
+  display: grid;
+  grid-template-columns: 54px minmax(80px,1fr) auto 54px;
+  gap: 12px;
+  align-items: center;
+  color: #fff;
+}
+.editorial-hero-controls button {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.86);
+  background: rgba(25,22,17,.58);
+  backdrop-filter: blur(7px);
+  font-size: 21px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.editorial-hero-controls button:active { transform: scale(.96); }
+.editorial-hero-progress { height: 1px; overflow: hidden; background: rgba(255,255,255,.42); }
+.editorial-hero-progress span { display:block; width:0; height:100%; background:#fff; }
+.editorial-hero.is-running .editorial-hero-progress span { animation: ritualHeroProgress 6.5s linear forwards; }
+.editorial-hero-count { font-size: 10px; letter-spacing: .03em; white-space: nowrap; }
+.editorial-hero-count b { font-weight: 500; }
+@keyframes ritualHeroProgress { to { width:100%; } }
+
+/* Catalogue — one title, one sentence, products */
+.collection { padding-top: 88px; }
+.collection-heading-clean {
+  display: block;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 4vw 34px;
+}
+.collection-heading-clean h2 {
+  margin: 0;
+  font: 400 clamp(42px, 4vw, 62px)/1.02 var(--heading);
+  letter-spacing: -.02em;
+}
+.bracelet-material-note {
+  max-width: 700px;
+  margin: 18px 0 0;
+  color: #5b554d;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.collection-guide,
+.catalogue-update { display: none !important; }
+
+.filters {
+  position: relative !important;
+  top: auto !important;
+  margin-bottom: 26px;
+  background: #fbfaf6 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overscroll-behavior-x: contain;
+}
+.filters button {
+  min-height: 54px;
+  font-size: 11px;
+  letter-spacing: .03em !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(181,78,45,.10);
+}
+.filters button:active { background: #eee9de; }
+.filters button.is-active { color: #fff; background: var(--ink); }
+
+/* No extra magnetic badges / injected catalogue noise */
+.catalogue-magnet-badge,
+.magnetic-catalogue-jump,
+.magnet-dialog-badge,
+.magnet-dialog-note { display: none !important; }
+.product-card.is-magnetic-product .product-card-info { border-color: var(--line) !important; }
+
+/* Engraving — keep the image, cut the copy */
+.engraving-banner-copy { align-content: center; }
+.engraving-banner-copy h2 {
+  margin: 0 0 18px;
+  font-size: clamp(42px, 4vw, 62px);
+  line-height: 1.02;
+}
+.engraving-body {
+  max-width: 460px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.engraving-rule { margin: 14px 0 20px; }
+
+/* Other rituals — one quiet section, three products */
+.other-rituals {
+  padding: 96px 3vw 110px;
+  background: #f7f3eb;
+  border-top: 1px solid var(--line);
+}
+.other-rituals-heading {
+  max-width: 1480px;
+  margin: 0 auto 34px;
+}
+.other-rituals-heading h2 {
+  margin: 0;
+  font: 400 clamp(40px, 3.8vw, 58px)/1.05 var(--heading);
+}
+.other-rituals-grid {
+  max-width: 1480px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 16px;
+}
+.other-ritual-card {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: #fbfaf6;
+}
+.other-ritual-media {
+  aspect-ratio: 1.12 / 1;
+  padding: 8%;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+.other-ritual-media img { width:100%; height:100%; object-fit:contain; }
+.other-ritual-copy { display:flex; flex-direction:column; padding:24px; }
+.other-ritual-copy h3 { margin:0; font:400 30px/1.08 var(--heading); }
+.other-ritual-copy p { margin:14px 0 26px; color:#5b554d; font-size:13px; line-height:1.55; }
+.other-ritual-bottom { margin-top:auto; display:grid; grid-template-columns:auto 82px 1fr; gap:10px; align-items:center; }
+.other-ritual-bottom > span { font-size:13px; }
+.other-ritual-bottom label { display:grid; grid-template-columns:auto 1fr; gap:6px; align-items:center; font-size:10px; color:#756d61; }
+.other-ritual-bottom input { width:100%; min-width:0; padding:10px 4px; border:1px solid var(--line); background:#fff; text-align:center; }
+.other-ritual-bottom button,
+.other-ritual-bottom a {
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  padding:0 14px;
+  border:1px solid var(--ink);
+  background:#fff;
+  font-size:11px;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.other-ritual-bottom button:active { background:var(--ink); color:#fff; }
+.other-ritual-bottom.single-action { grid-template-columns: 1fr; }
+
+.footer-wordmark { text-transform:none !important; }
+
+@media (max-width: 900px) {
+  .editorial-hero-slide { grid-template-columns: 1.25fr .75fr; }
+  .other-rituals-grid { grid-template-columns: 1fr 1fr; }
+  .other-ritual-card:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 760px) {
+  .site-header { grid-template-columns: 1fr auto auto; }
+  .editorial-hero {
+    height: auto;
+    min-height: 0;
+    margin-top: 64px;
+    overflow: visible;
+  }
+  .editorial-hero-track { position: relative; min-height: 660px; }
+  .editorial-hero-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: 430px auto;
+    min-height: 660px;
+  }
+  .editorial-hero-media { grid-row:1; }
+  .editorial-hero-copy {
+    grid-row:2;
+    min-height:230px;
+    padding:30px 22px 34px;
+    border-left:0;
+    border-top:1px solid var(--line);
+  }
+  .editorial-hero-overline { margin-bottom:12px; font-size:10px; }
+  .editorial-hero-title { font-size:clamp(38px, 11vw, 50px); line-height:1.02; }
+  .editorial-hero-deck { margin-top:14px; font-size:13px; }
+  .editorial-hero-action { margin-top:20px; }
+  .editorial-hero-masthead { top:20px; left:20px; }
+  .editorial-hero-masthead strong { font-size:64px; }
+  .editorial-hero-masthead span { font-size:8px; }
+  .editorial-hero-controls {
+    left:18px;
+    right:18px;
+    bottom:auto;
+    top:356px;
+    grid-template-columns:48px 1fr auto 48px;
+  }
+  .editorial-hero-controls button { width:48px; height:48px; background:rgba(25,22,17,.7); }
+
+  .collection { padding:62px 12px 76px; }
+  .collection-heading-clean { padding:0 10px 28px; }
+  .bracelet-material-note { font-size:13px; }
+  .filters {
+    display:flex;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+    scroll-snap-type:x proximity;
+  }
+  .filters::-webkit-scrollbar { display:none; }
+  .filters button { flex:0 0 auto; min-width:104px; padding-inline:18px; scroll-snap-align:start; }
+
+  .engraving-banner { grid-template-columns:1fr; }
+  .engraving-banner-copy { padding:48px 24px; }
+  .engraving-banner-visual { min-height:360px; }
+
+  .other-rituals { padding:70px 12px 80px; }
+  .other-rituals-heading { padding:0 10px; }
+  .other-rituals-grid { grid-template-columns:1fr; gap:12px; }
+  .other-ritual-card:last-child { grid-column:auto; }
+  .other-ritual-media { aspect-ratio:1.2/1; }
+  .other-ritual-bottom { grid-template-columns:auto 76px 1fr; }
+}
+
+@media (max-width: 430px) {
+  .editorial-hero-slide { grid-template-rows:390px auto; min-height:620px; }
+  .editorial-hero-controls { top:318px; }
+  .editorial-hero-masthead strong { font-size:58px; }
+  .collection-heading-clean h2,
+  .other-rituals-heading h2,
+  .engraving-banner-copy h2 { font-size:40px; }
+  .other-ritual-copy h3 { font-size:28px; }
+  .other-ritual-bottom { grid-template-columns:1fr 82px; }
+  .other-ritual-bottom button { grid-column:1 / -1; }
+}
